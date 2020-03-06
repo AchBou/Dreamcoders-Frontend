@@ -1,0 +1,51 @@
+<h3 nz-title>Liste des évaluations</h3>
+
+<br>
+<div nz-row>
+    <div nz-col nzSpan="8">
+        <button nz-button nzType="primary">Créer une évaluation</button>
+    </div>
+    <div nz-col nzSpan="8" nzOffset="8">
+        <nz-input-group nzWidth="15%" [nzSuffix]="suffixIconSearch">
+            <input type="text" nz-input placeholder="Chercher une évaluation" />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+            <i nz-icon nzType="search"></i>
+        </ng-template>
+    </div>
+</div>
+
+<nz-table #editRowTable nzBordered [nzData]="listOfData">
+    <thead>
+        <tr>
+            <th nzWidth="10%">Désignation</th>
+            <th nzWidth="10%">Enseignant</th>
+            <th nzWidth="10%">Formation</th>
+            <th nzWidth="10%">Promotion</th>
+            <th nzWidth="10%">Etat</th>
+            <th nzWidth="10%">Début de réponse</th>
+            <th nzWidth="10%">Fin de réponse</th>
+            <th nzWidth="10%">Unité d'enseignement</th>
+            <th nzWidth="10%">Element constitutif</th>
+            <th nzWidth="10%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of listOfData">
+            <td>{{ data.designation }}</td>
+            <td>{{ data.enseignant }} </td>
+            <td>{{ data.formation }}</td>
+            <td>{{ data.promotion }}</td>
+            <td>
+                <nz-badge *ngIf="data.etat === 'active'" nzColor="green" [nzText]="data.etat"></nz-badge>
+                <nz-badge *ngIf="data.etat === 'terminée'" nzColor="red" [nzText]="data.etat"></nz-badge>
+            </td>
+            <td>{{ data.debutReponse }}</td>
+            <td>{{ data.finReponse }}</td>
+            <td>{{ data.uniteEnseignement }}</td>
+            <td>{{ data.elementEnseignement }}</td>
+            <td><i nz-icon nzType="eye" nzTheme="outline"></i> | <i nz-icon nzType="edit" nzTheme="outline"></i> | <i nz-icon nzType="delete" nzTheme="outline"></i></td>
+
+        </tr>
+    </tbody>
+</nz-table>
