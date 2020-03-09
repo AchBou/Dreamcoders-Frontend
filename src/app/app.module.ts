@@ -10,18 +10,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
-import { NewComponentComponent } from './new-component/new-component.component';
-import { TestCompComponent } from './test-comp/test-comp.component';
+
 import { EvaluationComponent } from './evaluation/evaluation.component';
+import { RubriqueComponent } from './rubrique/rubrique.component';
+import { QuestionComponent } from './question/question.component';
+import { HomeComponent } from './home/home.component';
 
 registerLocaleData(fr);
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewComponentComponent,
-    TestCompComponent,
-    EvaluationComponent
+    EvaluationComponent,
+    RubriqueComponent,
+    QuestionComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
