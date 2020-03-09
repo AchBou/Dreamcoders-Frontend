@@ -15,6 +15,7 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
+import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 
 registerLocaleData(fr);
 
@@ -24,7 +25,8 @@ registerLocaleData(fr);
     EvaluationComponent,
     RubriqueComponent,
     QuestionComponent,
-    HomeComponent
+    HomeComponent,
+    AjouterComponent
   ],
   imports: [
     BrowserModule,
