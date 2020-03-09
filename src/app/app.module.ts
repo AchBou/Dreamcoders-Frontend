@@ -11,10 +11,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 
+
+
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
+import { QuestionMaterialModule } from './question/question-material';
+
 
 registerLocaleData(fr);
 
@@ -33,7 +37,8 @@ registerLocaleData(fr);
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    QuestionMaterialModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
