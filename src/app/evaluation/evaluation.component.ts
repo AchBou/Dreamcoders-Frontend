@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Evaluation } from './evaluation';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-evaluation',
@@ -8,7 +9,14 @@ import { Evaluation } from './evaluation';
 })
 export class EvaluationComponent implements OnInit {
 
-  ngOnInit(){}
+  constructor(private app:AppComponent){
+  }
+  ngOnInit(){
+    this.app.setTitle("Liste des évaluations");
+  }
+  ngOnDestroy(){
+    this.app.setTitle("");
+  }
 
   editCache: { [key: string]: { edit: boolean; data: Evaluation } } = {};
   listOfData: Evaluation[] = [

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-ajouter',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AjouterComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor(private app: AppComponent) { 
   }
 
+  ngOnInit() {
+    this.app.setTitle("Ajouter une Evaluation");
+  }
+
+  ngOnDestroy(){
+    this.app.setTitle("")
+  }
 }
