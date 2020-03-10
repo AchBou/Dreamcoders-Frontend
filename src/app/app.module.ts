@@ -17,6 +17,9 @@ import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
 import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 registerLocaleData(fr);
 
 @NgModule({
@@ -35,7 +38,10 @@ registerLocaleData(fr);
     NgZorroAntdModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NzDatePickerModule,
+    NzFormModule,
+    NzSelectModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
