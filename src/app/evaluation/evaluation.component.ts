@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EvaluationService } from './evaluation.service';
 
+import { AppComponent } from '../app.component';
+
 @Component({
   selector: 'app-evaluation',
   templateUrl: './evaluation.component.html',
@@ -11,9 +13,13 @@ export class EvaluationComponent implements OnInit {
   ngOnInit(){
     this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
     console.log(evaluations)});
+    this.app.setTitle("");
 
   }
- constructor(private evaluationService: EvaluationService){}
+ constructor(private evaluationService: EvaluationService, private app:AppComponent){}
+  
+  ngOnDestroy(){
+  }
 
 
   /*listOfData: Evaluation[] = [
