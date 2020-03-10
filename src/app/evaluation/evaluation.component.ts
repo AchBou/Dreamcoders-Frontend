@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Evaluation } from './evaluation';
+import { EvaluationService } from './evaluation.service';
 
 @Component({
   selector: 'app-evaluation',
@@ -7,11 +7,16 @@ import { Evaluation } from './evaluation';
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
+  evaluations: Object[] = [];
+  ngOnInit(){
+    this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
+    console.log(evaluations)});
 
-  ngOnInit(){}
+  }
+ constructor(private evaluationService: EvaluationService){}
 
-  editCache: { [key: string]: { edit: boolean; data: Evaluation } } = {};
-  listOfData: Evaluation[] = [
+
+  /*listOfData: Evaluation[] = [
     { designation: 'evaluation1',
       etat: 'active',
       debutReponse: '11/03/2020',
@@ -59,7 +64,7 @@ export class EvaluationComponent implements OnInit {
   elementEnseignement: ''},
   
   ];
-
+*/
   
 
 }

@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'evaluation', component: EvaluationComponent },
   { path: 'question', component: QuestionComponent },
   { path: 'rubrique', component: RubriqueComponent }
+
 ];
 
 @NgModule({

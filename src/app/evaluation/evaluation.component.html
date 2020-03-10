@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<nz-table #editRowTable nzBordered [nzData]="listOfData">
+<nz-table nzBordered [nzData]="evaluations">
     <thead>
         <tr>
             <th nzWidth="10%">Désignation</th>
@@ -31,19 +31,19 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of listOfData">
+        <tr *ngFor="let data of evaluations">
             <td>{{ data.designation }}</td>
-            <td>{{ data.enseignant }} </td>
-            <td>{{ data.formation }}</td>
-            <td>{{ data.promotion }}</td>
-            <td>
+            <td>{{ data.enseignantt.prenom }} {{ data.enseignantt.nom }} </td>
+            <td>{{ data.uniteEnseignementt.formationn.codeFormation }}</td>
+            <td>{{ data.promotionn.id.anneeUniversitaire }}</td>
+            <td>{{data.etat}}
                 <nz-badge *ngIf="data.etat === 'active'" nzColor="green" [nzText]="data.etat"></nz-badge>
                 <nz-badge *ngIf="data.etat === 'terminée'" nzColor="red" [nzText]="data.etat"></nz-badge>
             </td>
             <td>{{ data.debutReponse }}</td>
             <td>{{ data.finReponse }}</td>
-            <td>{{ data.uniteEnseignement }}</td>
-            <td>{{ data.elementEnseignement }}</td>
+            <td>{{ data.uniteEnseignementt.id.codeUe }}</td>
+            <td>{{ data.elementConstitutiff }}</td>
             <td><i nz-icon nzType="eye" nzTheme="outline"></i> | <i nz-icon nzType="edit" nzTheme="outline"></i> | <i nz-icon nzType="delete" nzTheme="outline"></i></td>
 
         </tr>
