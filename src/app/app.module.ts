@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { NgZorroAntdModule, NZ_I18N, fr_FR } from 'ng-zorro-antd';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +18,9 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
-import { QuestionMaterialModule } from './question/question-material';
+import { MaterialModule } from './material-module';
+import { ModalComponent } from './modal/modal.component';
+import { EditableComponent } from './editable/editable.component';
 
 
 registerLocaleData(fr);
@@ -28,7 +31,9 @@ registerLocaleData(fr);
     EvaluationComponent,
     RubriqueComponent,
     QuestionComponent,
-    HomeComponent
+    HomeComponent,
+    ModalComponent,
+    EditableComponent
   ],
   imports: [
     BrowserModule,
@@ -38,8 +43,10 @@ registerLocaleData(fr);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    QuestionMaterialModule
+    MaterialModule,
+    NzModalModule
   ],
+  entryComponents: [ModalComponent,RubriqueComponent],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
 })
