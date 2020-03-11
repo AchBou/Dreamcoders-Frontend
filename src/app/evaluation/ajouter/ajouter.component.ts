@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { AjouterService } from './ajouter.service';
 
 
@@ -16,6 +16,8 @@ export class AjouterComponent implements OnInit {
   private ue = [{Code_Formation: "M2DOSI", Code_UE: "BS"}];
   private ec= [{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "BD"},{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "DS"}]
 
+  private evaluation: Evaluation;
+  private dateDebut: Date;
   constructor(private app: AppComponent, private service: AjouterService) {  }
 
   ngOnInit() {
@@ -23,13 +25,28 @@ export class AjouterComponent implements OnInit {
     this.service.getFormations().subscribe((res)=>this.formation=res);
   }
 
-  submitForm(){
-    
+  submitForm(val: Evaluation){
+      console.log(val);
   }
 
   ngOnDestroy(){
     this.app.setTitle("")
   }
+  OnDateChange(debut: Date){
+    this.dateDebut = debut;
+  }
+  disabledEndDate = (endValue: Date): boolean => {
+    if (!endValue || !this.dateDebut) {
+      return true;
+    }
+    return endValue.getTime() <= this.dateDebut.getTime();
+  };
+  disabledStartDate = (startValue: Date): boolean => {
+    if (!startValue) {
+      startValue = new Date();
+    }
+    return startValue.getTime() <= new Date().getTime();
+  };
 }
 
 interface Formation{
@@ -40,4 +57,16 @@ interface Formation{
   finAccreditation: Date,
   n0Annee: number,
   nomFormation: String
+}
+interface Evaluation{
+  code_formation: String,
+  annee_universitaire: String,
+  code_ue: String,
+  code_ec: String,
+  no_evaluantion: Number,
+  designation: String,
+  etat: String,
+  periode: String,
+  debut_reponse: Date,
+  fin_reponse: Date
 }
