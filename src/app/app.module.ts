@@ -20,6 +20,7 @@ import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 registerLocaleData(fr);
 
 @NgModule({
@@ -41,7 +42,8 @@ registerLocaleData(fr);
     BrowserAnimationsModule,
     NzDatePickerModule,
     NzFormModule,
-    NzSelectModule
+    NzSelectModule,
+    NzModalModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]

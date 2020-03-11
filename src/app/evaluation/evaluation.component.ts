@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Evaluation } from './evaluation';
 import { AppComponent } from '../app.component';
+import { AjouterComponent } from './ajouter/ajouter.component';
 
 @Component({
   selector: 'app-evaluation',
@@ -9,13 +10,23 @@ import { AppComponent } from '../app.component';
 })
 export class EvaluationComponent implements OnInit {
 
-  constructor(private app:AppComponent){
+  isVisible : boolean = false;
+
+  constructor(private app:AppComponent,){
   }
   ngOnInit(){
     this.app.setTitle("Liste des évaluations");
   }
   ngOnDestroy(){
     this.app.setTitle("");
+  }
+
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  hideModal(): void {
+    this.isVisible = false;
   }
 
   editCache: { [key: string]: { edit: boolean; data: Evaluation } } = {};

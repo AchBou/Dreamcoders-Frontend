@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
 import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { AjouterService } from './ajouter.service';
+import { EvaluationComponent } from '../evaluation.component';
+import { NzModalService } from 'ng-zorro-antd';
 
 
 @Component({
@@ -10,28 +11,43 @@ import { AjouterService } from './ajouter.service';
   styleUrls: ['./ajouter.component.css']
 })
 export class AjouterComponent implements OnInit {
+  @Input()  hideModal(){};
 
   private formation: Formation[];
-  private promotion= [{Code_Formation: "M2DOSI", Annee_Universitaire: "2019/2020"},{Code_Formation: "M2DOSI", Annee_Universitaire: "2018/2019"}];
+  private promotion: PromotionPK[];
   private ue = [{Code_Formation: "M2DOSI", Code_UE: "BS"}];
   private ec= [{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "BD"},{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "DS"}]
 
   private evaluation: Evaluation;
   private dateDebut: Date;
-  constructor(private app: AppComponent, private service: AjouterService) {  }
+  constructor(private page: EvaluationComponent, private service: AjouterService, private modalService: NzModalService) {  }
 
   ngOnInit() {
-    this.app.setTitle("Ajouter une Evaluation");
-    this.service.getFormations().subscribe((res)=>this.formation=res);
+    this.service.getFormations().subscribe((res)=>this.formation = res.entity);
   }
 
   submitForm(val: Evaluation){
       console.log(val);
+      this.success()
+      this.page.hideModal();
   }
 
-  ngOnDestroy(){
-    this.app.setTitle("")
+  success(): void {
+    this.modalService.success({
+      nzTitle: 'Evaluation ajoutée',
+      nzContent: 'L\'évaluation a bien été crée'
+    });
   }
+
+  getPromo(code_formation){
+    if(code_formation==null){
+      this.promotion = [];
+    }
+    else{
+      this.service.getPromotions(code_formation).subscribe(res=> this.promotion = res.entity);
+    }
+  }
+
   OnDateChange(debut: Date){
     this.dateDebut = debut;
   }
@@ -45,10 +61,22 @@ export class AjouterComponent implements OnInit {
     if (!startValue) {
       startValue = new Date();
     }
-    return startValue.getTime() <= new Date().getTime();
+    return startValue.getTime()+(24*60*60*1000) < new Date().getTime();
   };
+
+  numberOnly(event): boolean {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
 }
 
+interface PromotionPK{
+  anneeUniversitaire: String,
+  codeFormation: String
+}
 interface Formation{
   codeFormation: String,
   debutAccreditation: Date,

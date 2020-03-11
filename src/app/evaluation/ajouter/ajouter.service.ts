@@ -11,5 +11,8 @@ export class AjouterService {
   getFormations(): Observable<any>{
     return this.http.get(this.server+"form/all");
   }
+  getPromotions(Code_formation: String): Observable<any>{
+    return this.http.get(this.server+"form/"+Code_formation+"/promo");
+  }
 }
 

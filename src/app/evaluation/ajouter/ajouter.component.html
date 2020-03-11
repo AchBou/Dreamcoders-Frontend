@@ -2,7 +2,7 @@
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="5" [nzXs]="24" nzFor="NoEval" nzRequired>No evaluation </nz-form-label>
         <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <input nz-input nzOverlayClassName="numeric-input" id="NoEval" type="text" name="no_evaluantion" ngModel required/>
+            <input nz-input (keypress)="numberOnly($event)" id="NoEval" type="text" name="no_evaluantion" ngModel required/>
         </nz-form-control>
     </nz-form-item >
     <nz-form-item>
@@ -30,7 +30,7 @@
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="5" [nzXs]="24" nzFor="Formation" nzRequired>Formation </nz-form-label>
         <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la formation concerné par l'evaluation" id="Formation" name="code_formation" ngModel required>
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la formation concerné par l'evaluation" id="Formation" name="code_formation" (ngModelChange)="getPromo($event)" ngModel required>
                 <nz-option style="width: max-content;" *ngFor="let form of formation" nzLabel="{{form.nomFormation}}" nzValue="{{form.codeFormation}}"></nz-option>
             </nz-select>
         </nz-form-control>
@@ -39,7 +39,7 @@
         <nz-form-label style="text-align: left;" [nzSm]="5" [nzXs]="24" nzFor="Promotion" nzRequired>Promotion </nz-form-label>
         <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Ce champs est obligatoire"> 
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la promotion concerné par l'evaluation" id="Promotion" name="annee_universitaire" ngModel required>
-                <nz-option style="width: max-content;" *ngFor="let prom of promotion" nzLabel="{{prom.Annee_Universitaire}}" nzValue="{{prom.Annee_Universitaire}}"></nz-option>
+                <nz-option style="width: max-content;" *ngFor="let prom of promotion" nzLabel="{{prom.anneeUniversitaire}}" nzValue="{{prom.anneeUniversitaire}}"></nz-option>
             </nz-select>
         </nz-form-control>
     </nz-form-item >
@@ -63,13 +63,13 @@
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="5" [nzXs]="24" nzFor="dateDebut" nzRequired>Date de début </nz-form-label>
         <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-          <nz-date-picker [nzDisabledDate]="disabledStartDate" nzFormat="dd/MM/yyyy" id="dateDebut" nzPlaceHolder="Début de réponses" name="debut_reponse" (ngModelChange)="OnDateChange($event)" ngModel></nz-date-picker>
+          <nz-date-picker [nzDisabledDate]="disabledStartDate" nzFormat="dd/MM/yyyy" id="dateDebut" nzPlaceHolder="Début de réponses" name="debut_reponse" (ngModelChange)="OnDateChange($event)" ngModel [nzShowToday]="false" required></nz-date-picker>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="5" [nzXs]="24" nzFor="dateFin" nzRequired>Date de fin </nz-form-label>
         <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-          <nz-date-picker nzFormat="dd/MM/yyyy" id="dateFin" nzPlaceHolder="Fin de réponses" name="fin_reponse" ngModel
+          <nz-date-picker nzFormat="dd/MM/yyyy" id="dateFin" nzPlaceHolder="Fin de réponses" name="fin_reponse" [nzShowToday]="false" ngModel required
           [nzDisabledDate]="disabledEndDate"></nz-date-picker>
         </nz-form-control>
     </nz-form-item>
