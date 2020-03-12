@@ -14,5 +14,14 @@ export class AjouterService {
   getPromotions(Code_formation: String): Observable<any>{
     return this.http.get(this.server+"form/"+Code_formation+"/promo");
   }
+  getUe(Code_formation: String): Observable<any>{
+    return this.http.get(this.server+"form/"+Code_formation+"/ue");
+  }
+  getEc(Code_ue: String): Observable<any>{
+    return this.http.get(this.server+"ue/"+Code_ue+"/ec");
+  }
+  addEvaluation(eva): Observable<any>{
+    return this.http.post(this.server+"eval/add", eva);
+  }
 }
 

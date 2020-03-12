@@ -11,14 +11,13 @@ import { NzModalService } from 'ng-zorro-antd';
   styleUrls: ['./ajouter.component.css']
 })
 export class AjouterComponent implements OnInit {
-  @Input()  hideModal(){};
 
   private formation: Formation[];
   private promotion: PromotionPK[];
-  private ue = [{Code_Formation: "M2DOSI", Code_UE: "BS"}];
-  private ec= [{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "BD"},{Code_Formation: "M2DOSI", Code_UE: "BS", Code_EC: "DS"}]
+  private ue: UE[];
+  private ec: EC[];
+  private EcHidden: boolean = true;
 
-  private evaluation: Evaluation;
   private dateDebut: Date;
   constructor(private page: EvaluationComponent, private service: AjouterService, private modalService: NzModalService) {  }
 
@@ -26,10 +25,17 @@ export class AjouterComponent implements OnInit {
     this.service.getFormations().subscribe((res)=>this.formation = res.entity);
   }
 
-  submitForm(val: Evaluation){
-      console.log(val);
-      this.success()
-      this.page.hideModal();
+  submitForm(evaluation: Evaluation, f: NgForm){
+      this.service.addEvaluation(evaluation).subscribe(Res=>{
+        if(Res.status==200){
+          this.success()
+          this.page.hideModal();
+          f.reset();
+        }
+        else{
+          this.error();
+        }
+      });
   }
 
   success(): void {
@@ -38,7 +44,13 @@ export class AjouterComponent implements OnInit {
       nzContent: 'L\'évaluation a bien été crée'
     });
   }
-
+  error(): void {
+    this.modalService.error({
+      nzTitle: 'Evaluation non ajoutée',
+      nzContent: 'erreur lors de la création de l\'evaluation \n'+
+                  '(cette évaluation existe déja)'
+    });
+  }
   getPromo(code_formation){
     if(code_formation==null){
       this.promotion = [];
@@ -47,7 +59,34 @@ export class AjouterComponent implements OnInit {
       this.service.getPromotions(code_formation).subscribe(res=> this.promotion = res.entity);
     }
   }
-
+  getUE(code_formation){
+    if(code_formation==null){
+      this.ue = [];
+    }
+    else{
+      this.service.getUe(code_formation).subscribe(res=> this.ue = res.entity);
+    }
+  }
+  getEC(code_ue, f: NgForm){
+    if(code_ue!=null){
+      this.service.getEc(code_ue).subscribe(res=>{
+        if(res.status!=404){
+          this.EcHidden = false;
+          this.ec = res.entity;
+        }
+        else{
+          this.EcHidden = true;
+          this.ec = [];
+          f.value.code_ec = null;
+        }
+      });
+    }
+    else{
+      this.ec = [];
+      f.value.ec = null;
+      this.EcHidden = true;
+    }
+  }
   OnDateChange(debut: Date){
     this.dateDebut = debut;
   }
@@ -97,4 +136,21 @@ interface Evaluation{
   periode: String,
   debut_reponse: Date,
   fin_reponse: Date
+}
+interface UE{
+  id: {codeFormation : String, codeUe : String},
+  description: String,
+  designation: String,
+  nbhCm: number,
+  nbhTd: number,
+  nbhTp: number,
+  semestre: number
+}
+interface EC{
+  id : { codeFormation: String, codeUe: String, codeEc: String},
+  description : String,
+  designation: String,
+  nbhCm: number,
+  nbhTd: number,
+  nbhTp: number
 }
