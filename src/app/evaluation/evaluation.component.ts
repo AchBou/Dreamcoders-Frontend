@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EvaluationService } from './evaluation.service';
-
 import { AppComponent } from '../app.component';
+import { AjouterComponent } from './ajouter/ajouter.component';
 
 @Component({
   selector: 'app-evaluation',
@@ -10,17 +10,27 @@ import { AppComponent } from '../app.component';
 })
 export class EvaluationComponent implements OnInit {
   evaluations: Object[] = [];
+ constructor(private evaluationService: EvaluationService, private app:AppComponent){}
+  
   ngOnInit(){
     this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
     console.log(evaluations)});
-    this.app.setTitle("");
+    this.app.setTitle("Liste des évaluations");
 
   }
- constructor(private evaluationService: EvaluationService, private app:AppComponent){}
-  
+  isVisible : boolean = false;
+
   ngOnDestroy(){
+    this.app.setTitle("");
   }
 
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  hideModal(): void {
+    this.isVisible = false;
+  }
 
   /*listOfData: Evaluation[] = [
     { designation: 'evaluation1',
