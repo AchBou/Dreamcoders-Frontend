@@ -25,7 +25,7 @@ export class AjouterComponent implements OnInit {
     this.service.getFormations().subscribe((res)=>this.formation = res.entity);
   }
 
-  submitForm(evaluation: Evaluation, f: NgForm){
+  submitForm(evaluation: EvaluationForm, f: NgForm){
       this.service.addEvaluation(evaluation).subscribe(Res=>{
         if(Res.status==200){
           this.success()
@@ -110,47 +110,4 @@ export class AjouterComponent implements OnInit {
     }
     return true;
   }
-}
-
-interface PromotionPK{
-  anneeUniversitaire: String,
-  codeFormation: String
-}
-interface Formation{
-  codeFormation: String,
-  debutAccreditation: Date,
-  diplome: String,
-  doubleDiplome: String,
-  finAccreditation: Date,
-  n0Annee: number,
-  nomFormation: String
-}
-interface Evaluation{
-  code_formation: String,
-  annee_universitaire: String,
-  code_ue: String,
-  code_ec: String,
-  no_evaluantion: Number,
-  designation: String,
-  etat: String,
-  periode: String,
-  debut_reponse: Date,
-  fin_reponse: Date
-}
-interface UE{
-  id: {codeFormation : String, codeUe : String},
-  description: String,
-  designation: String,
-  nbhCm: number,
-  nbhTd: number,
-  nbhTp: number,
-  semestre: number
-}
-interface EC{
-  id : { codeFormation: String, codeUe: String, codeEc: String},
-  description : String,
-  designation: String,
-  nbhCm: number,
-  nbhTd: number,
-  nbhTp: number
 }

@@ -9,7 +9,8 @@ import { AjouterComponent } from './ajouter/ajouter.component';
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
-  evaluations: Object[] = [];
+  evaluations: Evaluation[];
+  isVisible : boolean = false;
  constructor(private evaluationService: EvaluationService, private app:AppComponent){}
   
   ngOnInit(){
@@ -18,7 +19,6 @@ export class EvaluationComponent implements OnInit {
     this.app.setTitle("Liste des évaluations");
 
   }
-  isVisible : boolean = false;
 
   ngOnDestroy(){
     this.app.setTitle("");
