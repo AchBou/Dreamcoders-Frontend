@@ -1,42 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { QuestionService } from '../service/question/question.service';
+import { QualificatifService } from '../service/qualificatif/qualificatif.service';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
-export class QuestionComponent implements OnInit {
 
-  constructor() { }
+export class QuestionComponent implements OnInit {
+  lq:Question[];
+  lqua:Qualificatif[];
+  constructor(private qservice:QuestionService,private qualiService:QualificatifService) { }
 
   ngOnInit() {
+      this.showQuestions();
+      this.listQualificatifs();
   }
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-    dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  showQuestions(){
+    this.qservice.getQuestions().subscribe(res=>{
+                                  this.lq=res;
+                                  console.log(this.lq);
+                                  this.dataSource = new MatTableDataSource(this.lq);
+                                });
+}
+
+    displayedColumns: string[] = [ 'Intitule','Type','Qualificatif','action'];
+    dataSource:any;
+
+    listQualificatifs(){
+      this.qualiService.getQualificatifs().subscribe(res=>{
+                                    this.lqua=res;
+                                    console.log(this.lqua);
+                                  });
+    }
 
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    updateField(id: any){
+       this.dataSource.data[id].updatable=!this.dataSource.data[id].updatable;
+     }
+
+    addField(){
+      this.lq.unshift({id: null, type: null, enseignant: null, qualificatif: null,intitule:null,updatable:true});
+      this.dataSource = new MatTableDataSource(this.lq);
+    }
+
+    add(id: any){
+      this.updateField(id);
+      console.log(this.lq[id])
+    }
+
+    update(){
+
+    }
+
+    remove(id: any) {
+       this.qservice.deleteQuestion(id)
+        .subscribe(()=>this.showQuestions());
     }
 }
