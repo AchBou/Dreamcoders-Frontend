@@ -31,6 +31,7 @@ export class AjouterComponent implements OnInit {
           this.success()
           this.page.hideModal();
           f.reset();
+          this.page.ngOnInit();
         }
         else{
           this.error();

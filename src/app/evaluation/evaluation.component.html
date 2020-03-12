@@ -34,14 +34,12 @@
             <td>{{ data.enseignantt.prenom }} {{ data.enseignantt.nom }} </td>
             <td>{{ data.promotionn.formationn.codeFormation }}</td>
             <td>{{ data.promotionn.id.anneeUniversitaire }}</td>
-            <td>{{data.etat}}
-                <nz-badge *ngIf="data.etat === 'active'" nzColor="green" [nzText]="data.etat"></nz-badge>
-                <nz-badge *ngIf="data.etat === 'terminée'" nzColor="red" [nzText]="data.etat"></nz-badge>
-            </td>
+            <td>{{data.etat}}</td>
             <td>{{ data.debutReponse }}</td>
             <td>{{ data.finReponse }}</td>
             <td>{{ data.uniteEnseignementt.id.codeUe }}</td>
-            <td>{{ data.elementConstitutiff }}</td>
+            <td *ngIf="data.elementConstitutiff">{{ data.elementConstitutiff.id.codeEc }}</td>
+            <td *ngIf="!data.elementConstitutiff"> -- </td>
             <td><i nz-icon nzType="eye" nzTheme="outline"></i> | <i nz-icon nzType="edit" nzTheme="outline"></i> | <i nz-icon nzType="delete" nzTheme="outline"></i></td>
 
         </tr>
