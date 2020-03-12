@@ -76,7 +76,7 @@ export class QuestionComponent implements OnInit {
      }
 
     addField(){
-      this.lq.unshift({id: null, type: "QUS", enseignant: null, qualificatif: null,intitule:null,updatable:true});
+      this.lq.unshift({idQuestion: null, type: "QUS", enseignant: null, qualificatif: null,intitule:null,updatable:true});
       this.changeDataSource();
       this.paginator.firstPage();
     }

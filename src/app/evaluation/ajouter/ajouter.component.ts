@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
-import { AjouterService } from './ajouter.service';
+import { AjouterService } from '../../service/evaluation/ajouter.service';
 import { EvaluationComponent } from '../evaluation.component';
 import { NzModalService } from 'ng-zorro-antd';
 

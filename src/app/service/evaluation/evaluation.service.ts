@@ -13,6 +13,6 @@ export class EvaluationService {
 
   constructor(private http: HttpClient) { }
   getAllEval(): Observable<any>{
-    return this.http.get(this.baseUrl+"/evaltion/all");
+    return this.http.get(this.baseUrl+"/eval/all");
   }
 }

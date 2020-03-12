@@ -1,5 +1,5 @@
 interface Question {
-  id:number,
+  idQuestion:number,
   type:string,
   enseignant:Enseignant,
   qualificatif:Qualificatif,
