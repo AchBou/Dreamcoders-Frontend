@@ -3,5 +3,6 @@ interface Question {
   type:string,
   enseignant:Enseignant,
   qualificatif:Qualificatif,
-  intitule:string
+  intitule:string,
+  updatable:boolean
 }

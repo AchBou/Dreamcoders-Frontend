@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { NgZorroAntdModule, NZ_I18N, fr_FR } from 'ng-zorro-antd';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
@@ -30,7 +30,7 @@ registerLocaleData(fr);
     RubriqueComponent,
     QuestionComponent,
     HomeComponent
-    
+
   ],
   imports: [
     BrowserModule,
@@ -41,7 +41,8 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     NzModalModule,
-    QuestionMaterialModule
+    QuestionMaterialModule,
+    ReactiveFormsModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
