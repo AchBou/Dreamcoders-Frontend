@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EvaluationService } from './evaluation.service';
 import { AppComponent } from '../app.component';
-import { AjouterComponent } from './ajouter/ajouter.component';
+import { EvaluationService } from '../service/evaluation/evaluation.service';
 
 @Component({
   selector: 'app-evaluation',
