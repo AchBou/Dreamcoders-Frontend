@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RubriqueService } from './rubrique.service';
+import { RubriqueService } from '../editable/rubrique.service';
 
 describe('RubriqueService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

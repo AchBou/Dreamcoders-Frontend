@@ -1,5 +1,8 @@
 
-
+<button mat-button id="create" (click)="showCreateModal()">
+    <mat-icon aria-hidden="false" aria-label="createicon">add_circle_outline</mat-icon>
+    <b class="CreerEval"> Créer Evaluation</b>
+</button>
         <nz-table #editRowTable  [nzData]="listOfData">
 
           <tr>
@@ -7,17 +10,16 @@
                   <th class="text-center">Ordre</th>
                   <th class="text-center">Designation</th>
                   <th class="text-center">Action</th>
-              
+
 
           </tr>
+
           <tr *ngFor="let rubrique of editRowTable.data ; let Id = index;" class="rows">
                   <td>
-                    <ng-container *ngIf="!editCache[Id].edit; else nameInputTpl">
+                    <ng-container>
                       {{ rubrique.type }}
                     </ng-container>
-                    <ng-template #nameInputTpl>
-                      <input type="text" nz-input [(ngModel)]="editCache[Id].data.type" />
-                    </ng-template>
+
                   </td>
                   <td>
                     <ng-container *ngIf="!editCache[Id].edit; else ageInputTpl">
@@ -47,10 +49,27 @@
                       </ng-container>
                       <ng-template #saveTpl>
                         <button mat-button type="button" name="button" (click)="saveEdit(Id)">
-                        Save</button>
-                        <a nz-popconfirm nzTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(Id)">Cancel</a>
+                        Enregistrer</button>
+                        <a nz-popconfirm nzTitle="Etes-vous sûr d'annuler?" (nzOnConfirm)="cancelEdit(Id)">Annuler</a>
                       </ng-template>
                     </div>
                   </td>
         </tr>
     </nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
+    <div>
+      <div class="form-style-6">
+      <form #f='ngForm'>
+        <h2>Création d'une rubrique</h2>
+        <input type="text" name="type" placeholder="Type" value="RBS" ngModel readonly/>
+        <input type="number" name="ordre" placeholder="Ordre" ngModel required/>
+        <input type="text" name="designation" placeholder="Désignation" ngModel required />
+        <div *nzModalFooter>
+          <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
+          <button nz-button type="submit" value="submit" (click)="onSubmitForm(f)" id="AjoutBtn">Ajouter</button>
+        </div>
+      </form>
+    </div>
+    </div>
+</nz-modal>

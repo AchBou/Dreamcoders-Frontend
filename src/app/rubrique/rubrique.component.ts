@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { ModalComponent } from '../modal/modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { RubriqueService } from './rubrique.service';
+import { RubriqueService } from '../editable/rubrique.service';
 
 
 
@@ -14,29 +14,21 @@ import { RubriqueService } from './rubrique.service';
 export class RubriqueComponent implements OnInit {
   rubriqueList: Array<Rubrique> = [
   {
-    id : 1,
+    idRubrique : 1,
     type : 'type1',
     ordre :1,
     enseignant :null,
     designation: 'evaluation'
   },
   {
-    id : 2,
+    idRubrique : 2,
     type : 'type2',
     ordre :2,
     enseignant :null,
     designation: 'evaluation'
   }];
 
- awaitingRubriqueList: Array<Rubrique> = [
-  {
-    id : null,
-    type : null,
-    ordre :null,
-    enseignant :null,
-    designation: null,
-  }
-  ];
+
 
   editField: string;
   isVisible = false;
@@ -70,7 +62,7 @@ export class RubriqueComponent implements OnInit {
    showDeleteModal(id: number): void {
       this.modalService.confirm({
         nzTitle: 'Confirmer Suppression',
-        nzContent: ModalComponent,
+        nzContent: "ModalComponent",
         nzOkText : 'Oui',
         nzOkType : 'danger',
         nzOnOk: () => this.remove(id),
@@ -110,13 +102,13 @@ export class RubriqueComponent implements OnInit {
 
      }
 //Ajouter une ligne dans la table
-     add() :void{
+     /*add() :void{
        if (this.awaitingRubriqueList.length > 0) {
          let rubrique = this.awaitingRubriqueList[0];
          this.rubriqueList.push(rubrique);
          this.awaitingRubriqueList.splice(0, 1);
        }
-     }
+     }*/
 
      changeValue(id: number, property: any, event: any) :void{
        this.editField = event.target.textContent;

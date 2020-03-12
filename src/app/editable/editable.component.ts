@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalService, NzModalRef } from 'ng-zorro-antd/modal';
+import { RubriqueService } from './rubrique.service';
+import { NgForm } from '@angular/forms';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-editable',
@@ -9,25 +12,38 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 })
 
 export class EditableComponent implements OnInit {
-  awaitingRubriqueList: Array<Rubrique> = [
-   {
-     id : null,
-     type : null,
-     ordre :null,
-     enseignant :null,
-     designation: null,
-   }
-   ];
-  editCache: { [key: string]: { edit: boolean; data: Rubrique } } = {};
-  listOfData: Rubrique[] = [];
+  isVisible = false;
 
-  constructor(private modalService: NzModalService){}
+
+  //editCache: { [key: number]: { edit: boolean; data: Rubrique } } = {};
+  editCache: { edit: boolean; data: Rubrique }[] = [];
+  listOfData: Rubrique[] = [];
+  i=0;
+
+  constructor(private modalService: NzModalService, public RubService : RubriqueService){}
+
+  /* addRow(): void {
+
+    this.listOfData = [
+      ...this.listOfData,
+      {
+        id : null,
+        type : ' ',
+        ordre :0,
+        enseignant :null,
+        designation: ' ',
+      }
+    ];
+    this.i++;
+  } */
+
   startEdit(id: number): void {
     this.editCache[id].edit = true;
   }
 
   cancelEdit(id: number): void {
-    const index = this.listOfData.findIndex(item => item.id === id);
+    const ruId = this.editCache[id].data.idRubrique;
+    const index = this.listOfData.findIndex(item => item.idRubrique === ruId);
     this.editCache[id] = {
       data: { ...this.listOfData[index] },
       edit: false
@@ -35,19 +51,35 @@ export class EditableComponent implements OnInit {
   }
 
   saveEdit(id: number): void {
-    const index = this.listOfData.findIndex(item => item.id === id);
-    Object.assign(this.listOfData[index], this.editCache[id].data);
+    const rub = this.editCache[id].data;
+    console.log(rub);
+    const index = this.listOfData.findIndex(item => item.idRubrique === rub.idRubrique);
+    this.listOfData[index]= this.editCache[id].data;
+
     this.editCache[id].edit = false;
+
+    this.RubService.updateRub(rub).subscribe(res=>{
+      if(res){
+        this.updateEditCache()
+        }
+        else{
+          this.showErrorModal('Cette rubrique est déjà utilisée');
+      }
+    },err=>{}, )
   }
 
   updateEditCache(): void {
-    this.listOfData.forEach(item => {
+    /*this.listOfData.forEach(item => {
       this.editCache[item.id] = {
         edit: false,
         data: { ...item }
       };
+    });*/
+    this.listOfData.forEach(item => {
+      this.editCache.push({edit: false, data: item});
     });
   }
+
 
   showDeleteModal(id: number): void {
      this.modalService.confirm({
@@ -60,23 +92,62 @@ export class EditableComponent implements OnInit {
      });
    }
 
-   remove(id: any) :void {
-     //this.awaitingRubriqueList.push(this.listOfData[id]);
-      this.listOfData.splice(id, 1);
+   handleCancel(): void {
+     this.isVisible = false;
+   }
 
+   showErrorModal(message:string):void{
+     this.modalService.error({
+       nzTitle: 'Erreur',
+       nzContent : message,
+       nzOnOk : () => this.handleCancel()
+     });
+   }
+
+   remove(id: number) :void {
+     //this.awaitingRubriqueList.push(this.listOfData[id]);
+     const ruId = this.editCache[id].data;
+     this.RubService.deleteRub(ruId.idRubrique).subscribe(res=>{
+       if(res){
+         this.listOfData = this.listOfData.filter(d => d.idRubrique !== ruId.idRubrique);
+         this.updateEditCache()
+         }
+         else{
+           this.showErrorModal('Cette rubrique est déjà utilisée');
+       }
+     },err=>{}, )
+      // this.listOfData.splice(id, 1);
+     //  this.updateEditCache();
   }
 
-  ngOnInit(): void {
-    for (let i = 0; i < 5; i++) {
-      this.listOfData.push({
-        id: i,
-        type:'string'+i,
-        ordre:i+1,
-        enseignant:null,
-        designation:'string'+i,
+  showCreateModal(): void {
+     this.isVisible=true;
+   }
 
-      });
-    }
-    this.updateEditCache();
+  destroyModal(): void {
+        this.isVisible=false;
+        }
+
+confirmRemove():boolean{
+          return true;
+        }
+
+onSubmitForm(f: NgForm){
+          f.value.type = "RBS";
+            console.log(f.value);
+          this.RubService.addRub(f.value).subscribe(res=>{
+            console.log(res);
+            this.ngOnInit();
+          });
+          this.destroyModal();
+        }
+
+  public ngOnInit(): void {
+    this.RubService.getRubrique().subscribe(response=>{
+      this.listOfData = response;
+    }, error=>{},
+    ()=>{ this.updateEditCache(); }
+    )
+
   }
 }
