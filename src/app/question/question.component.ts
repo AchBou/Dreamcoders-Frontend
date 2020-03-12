@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuestionService } from '../service/question/question.service';
 import { QualificatifService } from '../service/qualificatif/qualificatif.service';
+import { FormControl, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+
 
 
 @Component({
@@ -13,6 +18,16 @@ import { QualificatifService } from '../service/qualificatif/qualificatif.servic
 export class QuestionComponent implements OnInit {
   lq:Question[];
   lqua:Qualificatif[];
+  qualificatifControl = new FormControl('', Validators.required);
+  selectFormControl = new FormControl('', Validators.required);
+  displayedColumns: string[] = [ 'Intitule','Type','Qualificatif','action'];
+  dataSource:any;
+  isLoaded=false;
+  mode: ProgressSpinnerMode = 'indeterminate';
+
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   constructor(private qservice:QuestionService,private qualiService:QualificatifService) { }
 
   ngOnInit() {
@@ -20,16 +35,21 @@ export class QuestionComponent implements OnInit {
       this.listQualificatifs();
   }
 
-  showQuestions(){
-    this.qservice.getQuestions().subscribe(res=>{
-                                  this.lq=res;
-                                  console.log(this.lq);
-                                  this.dataSource = new MatTableDataSource(this.lq);
-                                });
-}
+  changeDataSource(){
+    this.dataSource = new MatTableDataSource(this.lq);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
-    displayedColumns: string[] = [ 'Intitule','Type','Qualificatif','action'];
-    dataSource:any;
+    showQuestions(){
+      this.qservice.getQuestions().subscribe(res=>{
+                                    this.lq=res;
+                                    console.log(this.lq);
+                                    this.isLoaded=true
+                                    this.changeDataSource();
+                                  });
+    }
+
 
     listQualificatifs(){
       this.qualiService.getQualificatifs().subscribe(res=>{
@@ -41,28 +61,51 @@ export class QuestionComponent implements OnInit {
     applyFilter(event: Event) {
       const filterValue = (event.target as HTMLInputElement).value;
       this.dataSource.filter = filterValue.trim().toLowerCase();
+      if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
     }
 
-    updateField(id: any){
-       this.dataSource.data[id].updatable=!this.dataSource.data[id].updatable;
+    updateField(idx: any){
+      console.log(this.lq[idx])
+      if(this.lq[idx].idQuestion==null) {
+        this.lq.shift();
+        this.changeDataSource();
+      }
+      else if(this.lq[idx].idQuestion!=null) this.dataSource.data[idx].updatable=!this.dataSource.data[idx].updatable;
      }
 
     addField(){
-      this.lq.unshift({id: null, type: null, enseignant: null, qualificatif: null,intitule:null,updatable:true});
-      this.dataSource = new MatTableDataSource(this.lq);
+      this.lq.unshift({id: null, type: "QUS", enseignant: null, qualificatif: null,intitule:null,updatable:true});
+      this.changeDataSource();
+      this.paginator.firstPage();
     }
 
-    add(id: any){
-      this.updateField(id);
-      console.log(this.lq[id])
+    confirm(){
+      console.log("confirm")
     }
 
-    update(){
-
+    cancel(){
+      console.log('cancel')
     }
 
-    remove(id: any) {
-       this.qservice.deleteQuestion(id)
+    edit(idx: any){
+        if(this.lq[idx].idQuestion==null) this.add(idx);
+        else if(this.lq[idx].idQuestion!=null) this.update(idx);
+    }
+
+    add(idx: any){
+      this.qservice.addQuestion(this.lq[idx])
+          .subscribe(()=>this.showQuestions());
+    }
+
+    update(idx: any){
+      this.qservice.updateQuestion(this.lq[idx])
+          .subscribe(()=>this.showQuestions());
+    }
+
+    remove(idx: any) {
+       this.qservice.deleteQuestion(idx)
         .subscribe(()=>this.showQuestions());
     }
 }
