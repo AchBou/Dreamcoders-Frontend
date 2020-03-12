@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { EvaluationService } from './evaluation.service';
 import { AppComponent } from '../app.component';
-import { EvaluationService } from '../service/evaluation/evaluation.service';
+import { AjouterComponent } from './ajouter/ajouter.component';
 
 @Component({
   selector: 'app-evaluation',
@@ -9,17 +9,27 @@ import { EvaluationService } from '../service/evaluation/evaluation.service';
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
-  evaluations: Object[] = [];
+  evaluations: Evaluation[];
+  isVisible : boolean = false;
+ constructor(private evaluationService: EvaluationService, private app:AppComponent){}
+
   ngOnInit(){
     this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
     console.log(evaluations)});
-    this.app.setTitle("");
+    this.app.setTitle("Liste des évaluations");
 
   }
- constructor(private evaluationService: EvaluationService, private app:AppComponent){}
 
   ngOnDestroy(){
+    this.app.setTitle("");
   }
 
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  hideModal(): void {
+    this.isVisible = false;
+  }
 
 }

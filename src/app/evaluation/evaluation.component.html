@@ -1,7 +1,7 @@
 <br>
 <div nz-row>
-    <div nz-col nzSpan="8">
-        <button nz-button nzType="primary">Créer une évaluation</button>
+    <div nz-col nzSpan="8" class="btnGroup">
+        <button nz-button nzType="primary" (click)="showModal()">Créer une évaluation</button>
     </div>
     <div nz-col nzSpan="8" nzOffset="8">
         <nz-input-group nzWidth="15%" [nzSuffix]="suffixIconSearch">
@@ -32,7 +32,7 @@
         <tr *ngFor="let data of evaluations">
             <td>{{ data.designation }}</td>
             <td>{{ data.enseignantt.prenom }} {{ data.enseignantt.nom }} </td>
-            <td>{{ data.uniteEnseignementt.formationn.codeFormation }}</td>
+            <td>{{ data.promotionn.formationn.codeFormation }}</td>
             <td>{{ data.promotionn.id.anneeUniversitaire }}</td>
             <td>{{data.etat}}
                 <nz-badge *ngIf="data.etat === 'active'" nzColor="green" [nzText]="data.etat"></nz-badge>
@@ -47,3 +47,6 @@
         </tr>
     </tbody>
 </nz-table>
+<nz-modal nzWidth="60%" nzTitle="Ajouter une évaluation" [(nzVisible)]="isVisible" (nzOnCancel)="hideModal()" [nzFooter]="null">
+    <app-ajouter></app-ajouter>
+</nz-modal>

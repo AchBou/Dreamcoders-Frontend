@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,8 +18,12 @@ import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
 import { QuestionMaterialModule } from './question/question-material';
+import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 
-
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 registerLocaleData(fr);
 
 @NgModule({
@@ -29,8 +32,8 @@ registerLocaleData(fr);
     EvaluationComponent,
     RubriqueComponent,
     QuestionComponent,
-    HomeComponent
-
+    HomeComponent,
+    AjouterComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,10 @@ registerLocaleData(fr);
     BrowserAnimationsModule,
     NzModalModule,
     QuestionMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzDatePickerModule,
+    NzFormModule,
+    NzSelectModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
