@@ -1,29 +1,28 @@
-<!--
+
 <div>
   <div class="form-style-6">
-  <h1>Creation d'une évaluation</h1>
   <form>
+    <h2>Création d'une rubrique</h2>
     <input type="text" name="type" placeholder="Type" />
     <input type="number" name="ordre" placeholder="Ordre" />
-    <input type="Enseignant" name="enseignant" placeholder="Enseignant" />
     <input type="text" name="designation" placeholder="designation">
   </form>
 </div>
 </div>
 <div *nzModalFooter>
   <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
-  <button nz-button nzType="primary" (click)="AjoutEval()">Ajouter</button>
+  <button nz-button type="submit" (click)="add()" id="AjoutBtn">Ajouter</button>
 </div>
--->
+<!--
 <div>
 
   <div class="form-style-6">
   <form >
-      Etes-vous sûr de vouloir supprimer?
+      <input type="text" name="" value="">
     </form>
   </div>
 </div>
 <div *nzModalFooter>
   <button nz-button nzType="defaults" (click)="destroyModal()">Annuler</button>
   <button nz-button nzType="default" (click)="confirmRemove()">Confirmer</button>
-</div>
+</div> -->

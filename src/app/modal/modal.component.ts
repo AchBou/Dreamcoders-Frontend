@@ -22,5 +22,10 @@ export class ModalComponent implements OnInit {
   confirmRemove():boolean{
     return true;
   }
+  add()
+  {
+    console.log("Add function");
+    this.destroyModal();
+  }
 
 }

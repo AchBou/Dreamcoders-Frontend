@@ -41,13 +41,15 @@ export class RubriqueComponent implements OnInit {
   editField: string;
   isVisible = false;
   isConfirmLoading = false;
-
+  Rubriques:Rubrique [];
 
   constructor(private app:AppComponent,private modalService: NzModalService, private RubService : RubriqueService) { }
 
   ngOnInit() {
     this.app.setTitle('Liste des rubriques');
-  }
+    this.RubService.getRubrique().subscribe(res=>console.log(res));
+
+    }
 
   //displayedColumns: string[] = ['id', 'type', 'ordre', 'enseignant','designation','Action'];
   //dataSource = new MatTableDataSource(rubriqueList);
@@ -103,7 +105,7 @@ export class RubriqueComponent implements OnInit {
      }
 //supprimer une ligne
       remove(id: any) :void {
-         this.awaitingRubriqueList.push(this.rubriqueList[id]);
+         //this.awaitingRubriqueList.push(this.rubriqueList[id]);
          this.rubriqueList.splice(id, 1);
 
      }

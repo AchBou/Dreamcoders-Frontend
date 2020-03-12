@@ -1,14 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalComponent } from '../modal/modal.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-editable',
   templateUrl: './editable.component.html',
   styleUrls: ['./editable.component.css']
 })
+
 export class EditableComponent implements OnInit {
+  awaitingRubriqueList: Array<Rubrique> = [
+   {
+     id : null,
+     type : null,
+     ordre :null,
+     enseignant :null,
+     designation: null,
+   }
+   ];
   editCache: { [key: string]: { edit: boolean; data: Rubrique } } = {};
   listOfData: Rubrique[] = [];
 
+  constructor(private modalService: NzModalService){}
   startEdit(id: number): void {
     this.editCache[id].edit = true;
   }
@@ -34,6 +47,23 @@ export class EditableComponent implements OnInit {
         data: { ...item }
       };
     });
+  }
+
+  showDeleteModal(id: number): void {
+     this.modalService.confirm({
+       nzTitle: 'Confirmer Suppression',
+       nzContent: 'Etes-vous sûr de vouloir supprimer?',
+       nzOkText : 'Oui',
+       nzOkType : 'danger',
+       nzOnOk: () => this.remove(id),
+       nzOnCancel: () => console.log('Cancel'),
+     });
+   }
+
+   remove(id: any) :void {
+     //this.awaitingRubriqueList.push(this.listOfData[id]);
+      this.listOfData.splice(id, 1);
+
   }
 
   ngOnInit(): void {
