@@ -42,10 +42,10 @@ export class EditableComponent implements OnInit {
   }
 
   cancelEdit(id: number): void {
-    const ruId = this.editCache[id].data.idRubrique;
-    const index = this.listOfData.findIndex(item => item.idRubrique === ruId);
+    const ruId = this.editCache[id].data;
+    const index = this.listOfData.findIndex(item => item.idRubrique === ruId.idRubrique);
     this.editCache[id] = {
-      data: { ...this.listOfData[index] },
+      data: this.listOfData[index],
       edit: false
     };
   }
@@ -63,7 +63,7 @@ export class EditableComponent implements OnInit {
         this.updateEditCache()
         }
         else{
-          this.showErrorModal('Cette rubrique est déjà utilisée');
+          this.showErrorModal();
       }
     },err=>{}, )
   }
@@ -96,11 +96,11 @@ export class EditableComponent implements OnInit {
      this.isVisible = false;
    }
 
-   showErrorModal(message:string):void{
+   showErrorModal():void{
      this.modalService.error({
        nzTitle: 'Erreur',
-       nzContent : message,
-       nzOnOk : () => this.handleCancel()
+       nzContent : 'Cette rubrique est déjà utilisée dans une évaluation',
+       nzOnOk : () => {this.handleCancel();}
      });
    }
 
@@ -113,7 +113,7 @@ export class EditableComponent implements OnInit {
          this.updateEditCache()
          }
          else{
-           this.showErrorModal('Cette rubrique est déjà utilisée');
+           this.showErrorModal();
        }
      },err=>{}, )
       // this.listOfData.splice(id, 1);
@@ -128,7 +128,7 @@ export class EditableComponent implements OnInit {
         this.isVisible=false;
         }
 
-confirmRemove():boolean{
+ confirmRemove():boolean{
           return true;
         }
 
@@ -141,6 +141,30 @@ onSubmitForm(f: NgForm){
           });
           this.destroyModal();
         }
+
+
+  editIsAuthorized(id : number){
+    const ruId = this.editCache[id].data.idRubrique;
+    this.RubService.ifLinked(ruId).subscribe(res=>{
+      if(!res)
+        {console.log (res);this.startEdit(id);}
+      else
+        {this.showErrorModal();
+         }
+    }, err=> {},
+    ()=>{ }
+  )
+  }
+
+  DeleteIsAuthorized(id : number){
+    const ruId = this.editCache[id].data.idRubrique;
+    this.RubService.ifLinked(ruId).subscribe(res=>{
+      if(!res)
+        {console.log (res);this.showDeleteModal(id);}
+      else
+        {this.showErrorModal();}
+    })
+  }
 
   public ngOnInit(): void {
     this.RubService.getRubrique().subscribe(response=>{

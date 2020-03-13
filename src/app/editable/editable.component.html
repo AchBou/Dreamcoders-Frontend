@@ -40,10 +40,10 @@
                   <td>
                     <div class="editable-row-operations">
                       <ng-container *ngIf="!editCache[Id].edit; else saveTpl">
-                        <button mat-button type="button" name="button" (click)="startEdit(Id)">
+                        <button mat-button type="button" name="button" (click)="editIsAuthorized(Id)">
                           <mat-icon aria-hidden="false" aria-label="createicon">create</mat-icon>
                         </button>
-                        <button mat-button (click)="showDeleteModal(Id)">
+                        <button mat-button (click)="DeleteIsAuthorized(Id)">
                           <mat-icon aria-hidden="false" aria-label="deleteicon">delete</mat-icon>
                         </button>
                       </ng-container>

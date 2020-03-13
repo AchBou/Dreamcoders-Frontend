@@ -23,4 +23,8 @@ export class RubriqueService {
    updateRub(rubrique: Rubrique) : Observable<boolean>{
      return this.http.post<boolean>("http://localhost:8080/rubrique/Update", rubrique);
    }
+   ifLinked(id: number) : Observable<boolean> {
+     return this.http.get<boolean>("http://localhost:8080/rubrique/linked/"+id);
+
+   }
 }
