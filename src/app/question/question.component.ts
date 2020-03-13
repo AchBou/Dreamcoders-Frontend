@@ -21,7 +21,7 @@ export class QuestionComponent implements OnInit {
   lq:Question[];
   lqua:Qualificatif[];
   qualificatifControl = new FormControl('', Validators.required);
-  selectFormControl = new FormControl('', Validators.required);
+  intituleFormControl = new FormControl('', Validators.required);
   displayedColumns: string[] = [ 'Intitule','Type','Qualificatif','action'];
   dataSource:any;
   isLoaded=false;
@@ -37,18 +37,15 @@ export class QuestionComponent implements OnInit {
   ngOnInit() {
       this.showQuestions();
       this.listQualificatifs();
+      this.qservice.checkValidity(1).subscribe(res=>console.log(res))
   }
 
-  openDialog(): void {
+  openDialog(msg:string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
-      //data: {name: this.name, animal: this.animal}
+      data: msg
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log(result)
-    });
+    dialogRef.afterClosed().subscribe();
   }
   changeDataSource(){
     this.dataSource = new MatTableDataSource(this.lq);
@@ -81,14 +78,22 @@ export class QuestionComponent implements OnInit {
     }
     }
 
+
     updateField(idx: any){
-      console.log(this.lq[idx])
-      if(this.lq[idx].idQuestion==null) {
-        this.lq.shift();
-        this.changeDataSource();
+      this.qservice.checkValidity(this.lq[idx].idQuestion).subscribe(res=>{
+        if(!res){
+          if(this.lq[idx].idQuestion==null) {
+            this.lq.shift();
+            this.changeDataSource();
+          }
+          else if(this.lq[idx].idQuestion!=null) this.dataSource.data[idx].updatable=!this.dataSource.data[idx].updatable;
       }
-      else if(this.lq[idx].idQuestion!=null) this.dataSource.data[idx].updatable=!this.dataSource.data[idx].updatable;
-     }
+      else {
+        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être modifier!');
+      }
+    })
+    }
+
 
     addField(){
       this.lq.unshift({idQuestion: null, type: "QUS", enseignant: null, qualificatif: null,intitule:null,updatable:true});
@@ -105,22 +110,38 @@ export class QuestionComponent implements OnInit {
     }
 
     edit(idx: any){
+      if(this.lq[idx].idQuestion!=null&&this.lq[idx]!=null){
         if(this.lq[idx].idQuestion==null) this.add(idx);
         else if(this.lq[idx].idQuestion!=null) this.update(idx);
+      }
+      else{
+        this.openDialog('Veuillez renseigner tous les champs obligatoires');
+      }
     }
 
     add(idx: any){
+
       this.qservice.addQuestion(this.lq[idx])
           .subscribe(()=>this.showQuestions());
+
     }
 
     update(idx: any){
+
       this.qservice.updateQuestion(this.lq[idx])
           .subscribe(()=>this.showQuestions());
     }
 
     remove(idx: any) {
-       this.qservice.deleteQuestion(idx)
-        .subscribe(()=>this.showQuestions());
+      this.qservice.checkValidity(idx).subscribe(res=>{
+        if(!res){
+          this.qservice.deleteQuestion(idx)
+           .subscribe(()=>this.showQuestions());
+      }
+      else {
+        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être supprimée!');
+      }
+    })
+
     }
 }

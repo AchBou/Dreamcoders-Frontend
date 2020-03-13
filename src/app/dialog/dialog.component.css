@@ -3,9 +3,14 @@
 }
 
 div.mat-dialog-content{
-  padding: 20px;
-  margin: 20px;
+  padding: 10px;
+  margin: 10px 20px;
+  font-size: 16px;
 }
+
 h1{
   text-align: center;
+  color: red;
+  font-size: 24px;
+  font-weight: bold;
 }

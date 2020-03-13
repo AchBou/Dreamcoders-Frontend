@@ -28,4 +28,9 @@ export class QuestionService {
   updateQuestion(q:Question){
     return this.http.post(this.baseUrl+"/question/update",q);
   }
+
+  checkValidity(id:number){
+    return this.http.get(this.baseUrl+'/question/findqstinEva/'+id)
+  }
+
 }
