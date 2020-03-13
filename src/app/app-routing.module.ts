@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { EvaluationComponent } from './evaluation/evaluation.component';
 import { QuestionComponent } from './question/question.component';
-import { RubriqueComponent } from './rubrique/rubrique.component';
 import { HomeComponent } from './home/home.component';
+import { RubriqueComponent } from './rubrique/rubrique.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
