@@ -42,7 +42,7 @@
                       <ng-container *ngIf="!editCache[Id].edit; else saveTpl">
                         <button mat-button type="button" name="button" (click)="editIsAuthorized(Id)">
                           <mat-icon aria-hidden="false" aria-label="createicon">create</mat-icon>
-                        </button>
+                        </button> <b>|</b>
                         <button mat-button (click)="DeleteIsAuthorized(Id)">
                           <mat-icon aria-hidden="false" aria-label="deleteicon">delete</mat-icon>
                         </button>
@@ -60,15 +60,24 @@
 <nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
     <div>
       <div class="form-style-6">
-      <form #f='ngForm'>
+      <form  #f='ngForm'>
         <h2>Création d'une rubrique</h2>
-        <input type="text" name="type" placeholder="Type" value="RBS" ngModel readonly/>
+        <div class="form-group">
+        <input type="text" name="type" placeholder="RBS" ngModel readonly/>
         <input type="number" name="ordre" placeholder="Ordre" ngModel required/>
+        <div *ngIf="form.get('OrdreControl').touched && form.get('DesControl').invalid">
+          Ordre est obligatoire.
+        </div>
         <input type="text" name="designation" placeholder="Désignation" ngModel required />
+        <div *ngIf="form.get('DesControl').touched && !form.get('DesControl').invalid">
+          Désignation est obligatoire.
+      </div>
         <div *nzModalFooter>
           <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
           <button nz-button type="submit" value="submit" (click)="onSubmitForm(f)" id="AjoutBtn">Ajouter</button>
         </div>
+      </div>
+
       </form>
     </div>
     </div>
