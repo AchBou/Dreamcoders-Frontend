@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NgForm } from '@angular/forms';
+import { NgForm, Validators, FormControl, FormGroup } from '@angular/forms';
 import { RubriqueService } from '../service/rubrique/rubrique.service';
 
 @Component({
@@ -11,6 +11,10 @@ import { RubriqueService } from '../service/rubrique/rubrique.service';
 
 export class RubriqueComponent implements OnInit {
   isVisible = false;
+  form = new FormGroup({
+  OrdreControl: new FormControl('', Validators.required),
+  DesControl: new FormControl('', Validators.required)
+});
 
 
   //editCache: { [key: number]: { edit: boolean; data: Rubrique } } = {};
@@ -26,19 +30,23 @@ export class RubriqueComponent implements OnInit {
   }
 
   cancelEdit(id: number): void {
+    console.log(this.editCache[id].data);
     const ruId = this.editCache[id].data;
     const index = this.listOfData.findIndex(item => item.idRubrique === ruId.idRubrique);
-    this.editCache[id] = {
-      data: this.listOfData[index],
-      edit: false
-    };
+    this.editCache[id].edit= false;
+    this.editCache[id].data= this.listOfData[index];
+
+
   }
 
   saveEdit(id: number): void {
+    if(this.editCache[id].data.designation != '' && this.editCache[id].data.ordre != null)
+    {
     const rub = this.editCache[id].data;
     console.log(rub);
     const index = this.listOfData.findIndex(item => item.idRubrique === rub.idRubrique);
-    this.listOfData[index]= this.editCache[id].data;
+
+      this.listOfData[index]= this.editCache[id].data;
 
     this.editCache[id].edit = false;
 
@@ -47,9 +55,12 @@ export class RubriqueComponent implements OnInit {
         this.updateEditCache()
         }
         else{
-          this.showErrorModal();
+          this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation ');
       }
     })
+  }
+  else
+    this.showErrorModal('Les champs sont obligatoires');
   }
 
   updateEditCache(): void {
@@ -75,11 +86,19 @@ export class RubriqueComponent implements OnInit {
      this.isVisible = false;
    }
 
-   showErrorModal():void{
+   showErrorModal(s : string):void{
      this.modalService.error({
        nzTitle: 'Erreur',
-       nzContent : 'Cette rubrique est déjà utilisée dans une évaluation',
+       nzContent : s,
        nzOnOk : () => {this.handleCancel();}
+     });
+   }
+
+   showError(s : string):void{
+     this.modalService.error({
+       nzTitle: 'Erreur',
+       nzContent : s,
+       nzOnOk : () => {this.handleCancel(); this.showCreateModal();}
      });
    }
 
@@ -91,7 +110,7 @@ export class RubriqueComponent implements OnInit {
          this.updateEditCache()
          }
          else{
-           this.showErrorModal();
+           this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');
        }
      })
 
@@ -112,11 +131,15 @@ export class RubriqueComponent implements OnInit {
 onSubmitForm(f: NgForm){
           f.value.type = "RBS";
             console.log(f.value);
+        if(f.value.ordre != '' && f.value.designation != ''){
           this.RubService.addRub(f.value).subscribe(res=>{
             console.log(res);
             this.ngOnInit();
           });
           this.destroyModal();
+        }
+          this.showError('Remplissez les champs !');
+
         }
 
 
@@ -126,7 +149,7 @@ onSubmitForm(f: NgForm){
       if(!res)
         {console.log (res);this.startEdit(id);}
       else
-        {this.showErrorModal();
+        {this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');
          }
     }
   )
@@ -138,7 +161,7 @@ onSubmitForm(f: NgForm){
       if(!res)
         {console.log (res);this.showDeleteModal(id);}
       else
-        {this.showErrorModal();}
+        {this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');}
     })
   }
 
