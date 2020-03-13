@@ -1,1 +1,48 @@
-<p>rubrique works!</p>
+
+<!-- Modal style
+  <button mat-button id="create" (click)="showCreateModal()">
+      <mat-icon aria-hidden="false" aria-label="createicon">add_circle_outline</mat-icon>
+      <b class="CreerEval"> Créer Evaluation</b>
+  </button>
+
+-->
+
+
+<!-- Editable row style
+<table>
+
+  <tr>
+          <th class="text-center">Type</th>
+          <th class="text-center">Ordre</th>
+          <th class="text-center">Enseignant</th>
+          <th class="text-center">Designation</th>
+          <th></th>
+
+  </tr>
+  <tr *ngFor="let rubrique of rubriqueList; let Id = index;" class="rows">
+
+          <td>
+            <input  contenteditable="true" (keyup)="changeValue(Id, 'type', $event)" (blur)="updateList(Id, 'type', $event)" [value]="rubrique.type"/>
+          </td>
+          <td>
+            <input  contenteditable="true" (keyup)="changeValue(Id, 'ordre', $event)" (blur)="updateList(Id, 'ordre', $event)" [value]='rubrique.ordre'/>
+          </td>
+          <td>
+            <input readonly (keyup)="changeValue(Id, 'enseignant', $event)" (blur)="updateList(Id, 'enseignant', $event)"[value]='rubrique.enseignant'/>
+          </td>
+          <td>
+            <input contenteditable="true" (keyup)="changeValue(Id, 'designation', $event)" (blur)="updateList(Id, 'designation', $event)"[value]='rubrique.designation'/>
+          </td>
+
+          <td>
+            <span class="table-remove">
+              <button mat-button (click)="showDeleteModal(Id)">
+                <mat-icon aria-hidden="false" aria-label="deleteicon">delete</mat-icon>
+              </button>
+            </span>
+        </td>
+
+        </tr>
+      </table> -->
+
+      <app-editable></app-editable>

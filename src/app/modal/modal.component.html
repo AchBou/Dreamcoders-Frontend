@@ -1,0 +1,28 @@
+
+<div>
+  <div class="form-style-6">
+  <form #f='ngForm' (ngSubmit)="onSubmitForm(f)">
+    <h2>Création d'une rubrique</h2>
+    <input type="text" name="type" placeholder="Type" value="RBS" ngModel readonly/>
+    <input type="number" name="ordre" placeholder="Ordre" ngModel required/>
+    <input type="text" name="designation" placeholder="Désignation" ngModel required />
+    <!-- <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
+      <button nz-button type="submit" value="submit" nzOkType="default" (click)="onSubmitForm(f)" id="AjoutBtn">Ajouter</button>
+    </div> -->
+  </form>
+</div>
+</div>
+<!--
+<div>
+
+  <div class="form-style-6">
+  <form >
+      <input type="text" name="" value="">
+    </form>
+  </div>
+</div>
+<div *nzModalFooter>
+  <button nz-button nzType="defaults" (click)="destroyModal()">Annuler</button>
+  <button nz-button nzType="default" (click)="confirmRemove()">Confirmer</button>
+</div> -->
