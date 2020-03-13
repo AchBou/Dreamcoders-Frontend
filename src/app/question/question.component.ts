@@ -110,7 +110,7 @@ export class QuestionComponent implements OnInit {
     }
 
     edit(idx: any){
-      if(this.lq[idx].idQuestion!=null&&this.lq[idx]!=null){
+      if(this.lq[idx].intitule!=null&&this.lq[idx].qualificatiff!=null){
         if(this.lq[idx].idQuestion==null) this.add(idx);
         else if(this.lq[idx].idQuestion!=null) this.update(idx);
       }

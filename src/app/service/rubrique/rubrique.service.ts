@@ -16,13 +16,13 @@ export class RubriqueService {
      return this.http.get<Rubrique []>(this.baseUrl+"/rubrique/all");
    }
    deleteRub(id:number) : Observable<boolean>{
-     return this.http.delete<boolean>(this.baseUrl+"/rubrique/Supprimer/"+id);
+     return this.http.delete<boolean>(this.baseUrl+"/rubrique/supprimer/"+id);
    }
    addRub(rubrique: Rubrique) : Observable<Rubrique>{
-     return this.http.post<Rubrique>(this.baseUrl+"/rubrique/Create", rubrique);
+     return this.http.post<Rubrique>(this.baseUrl+"/rubrique/create", rubrique);
    }
    updateRub(rubrique: Rubrique) : Observable<boolean>{
-     return this.http.post<boolean>(this.baseUrl+"/rubrique/Update", rubrique);
+     return this.http.post<boolean>(this.baseUrl+"/rubrique/update", rubrique);
    }
    ifLinked(id: number) : Observable<boolean> {
      return this.http.get<boolean>(this.baseUrl+"/rubrique/linked/"+id);
