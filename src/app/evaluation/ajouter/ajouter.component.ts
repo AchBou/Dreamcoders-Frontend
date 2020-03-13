@@ -49,7 +49,7 @@ export class AjouterComponent implements OnInit {
     this.modalService.error({
       nzTitle: 'Evaluation non ajoutée',
       nzContent: 'erreur lors de la création de l\'evaluation \n'+
-                  '(cette évaluation existe déja)'
+                  '(les donnees ne respecte pas les contraintes de la BDD)'
     });
   }
   getPromo(code_formation){

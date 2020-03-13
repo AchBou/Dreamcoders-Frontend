@@ -35,8 +35,6 @@ export class RubriqueComponent implements OnInit {
     const index = this.listOfData.findIndex(item => item.idRubrique === ruId.idRubrique);
     this.editCache[id].edit= false;
     this.editCache[id].data= this.listOfData[index];
-
-
   }
 
   saveEdit(id: number): void {
@@ -64,7 +62,7 @@ export class RubriqueComponent implements OnInit {
   }
 
   updateEditCache(): void {
-
+    this.editCache = [];
     this.listOfData.forEach(item => {
       this.editCache.push({edit: false, data: item});
     });
@@ -107,7 +105,7 @@ export class RubriqueComponent implements OnInit {
      this.RubService.deleteRub(ruId.idRubrique).subscribe(res=>{
        if(res){
          this.listOfData = this.listOfData.filter(d => d.idRubrique !== ruId.idRubrique);
-         this.updateEditCache()
+         this.updateEditCache();
          }
          else{
            this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');
@@ -138,7 +136,9 @@ onSubmitForm(f: NgForm){
           });
           this.destroyModal();
         }
+        else{
           this.showError('Remplissez les champs !');
+        }
 
         }
 
