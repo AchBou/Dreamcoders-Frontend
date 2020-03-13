@@ -1,0 +1,11 @@
+* {
+  margin: auto;
+}
+
+div.mat-dialog-content{
+  padding: 20px;
+  margin: 20px;
+}
+h1{
+  text-align: center;
+}

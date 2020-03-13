@@ -49,7 +49,7 @@
                     {{qualif.maximal}} - {{qualif.minimal}}
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="qualificatifControl.hasError('required')">Please choose an animal</mat-error>
+                <mat-error *ngIf="qualificatifControl.hasError('required')">Please choose an qualificatif</mat-error>
                 <mat-hint>{{qualificatifControl.value?.sound}}</mat-hint>
               </mat-form-field>
 
@@ -86,6 +86,7 @@
               <button class="cNlBtn" *ngIf="this.dataSource.data[index].updatable" (click)="updateField(index)" mat-icon-button aria-label="Supprimer" color="warn">
                 <mat-icon>cancel</mat-icon>
               </button>
+              <button mat-raised-button (click)="openDialog()">Pick one</button>
             </td>
           </ng-container>
 

@@ -7,6 +7,19 @@ table {
 .mat-elevation-z8{
   width: 100%;
   margin : auto;
+  table-layout: fixed;
+}
+
+.mat-header-cell {
+  text-align: center;
+}
+
+td.mat-cell{
+  text-align: center;
+}
+
+ td.mat-column-Intitule{
+  text-align: left;
 }
 .filter{
   width: 80%;

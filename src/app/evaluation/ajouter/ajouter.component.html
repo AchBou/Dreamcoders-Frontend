@@ -1,8 +1,8 @@
-<form nz-form #f="ngForm" (ngSubmit)="submitForm(f.value, f)"> 
+<form nz-form #f="ngForm" (ngSubmit)="submitForm(f.value, f)">
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="NoEval" nzRequired>No evaluation </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <input nz-input (keypress)="numberOnly($event)" id="NoEval" type="text" name="no_evaluantion" ngModel required/>
+            <input maxlength=2 nz-input (keypress)="numberOnly($event)" id="NoEval" type="text" name="no_evaluantion" ngModel required/>
         </nz-form-control>
     </nz-form-item >
     <nz-form-item>
@@ -37,7 +37,7 @@
     </nz-form-item >
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Promotion" nzRequired>Promotion </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire"> 
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la promotion concerné par l'evaluation" id="Promotion" name="annee_universitaire" ngModel required>
                 <nz-option style="width: max-content;" *ngFor="let prom of promotion" nzLabel="{{prom.anneeUniversitaire}}" nzValue="{{prom.anneeUniversitaire}}"></nz-option>
             </nz-select>
@@ -51,7 +51,7 @@
             </nz-select>
         </nz-form-control>
     </nz-form-item >
-    <nz-form-item [hidden]="EcHidden">  
+    <nz-form-item [hidden]="EcHidden">
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="EC" >Element constitutif </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24">
             <nz-select nzShowSearch nzAllowClear [nzDisabled]="EcHidden" nzPlaceHolder="Evaluation porte sur quelle EC" id="EC" name="code_ec" ngModel>

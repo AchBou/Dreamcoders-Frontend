@@ -6,6 +6,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 
 
@@ -28,13 +30,26 @@ export class QuestionComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private qservice:QuestionService,private qualiService:QualificatifService) { }
+  constructor(private qservice:QuestionService,
+              private qualiService:QualificatifService,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
       this.showQuestions();
       this.listQualificatifs();
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '500px',
+      //data: {name: this.name, animal: this.animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result)
+    });
+  }
   changeDataSource(){
     this.dataSource = new MatTableDataSource(this.lq);
     this.dataSource.paginator = this.paginator;
