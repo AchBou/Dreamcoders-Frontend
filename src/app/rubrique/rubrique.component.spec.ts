@@ -1,25 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RubriqueComponent } from './rubrique.component';
 
-describe('RubriqueComponent', () => {
+describe('EditableComponent', () => {
   let component: RubriqueComponent;
   let fixture: ComponentFixture<RubriqueComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RubriqueComponent ]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(RubriqueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+  }));
 
-  it('should create', () => {
+  it('should compile', () => {
     expect(component).toBeTruthy();
   });
 });

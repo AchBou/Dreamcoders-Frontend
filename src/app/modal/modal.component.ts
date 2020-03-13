@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NgForm } from '@angular/forms';
-import { RubriqueService } from '../editable/rubrique.service';
-import { NzButtonModule } from 'ng-zorro-antd/button';
+import { RubriqueService } from '../service/rubrique/rubrique.service';
 
 @Component({
   selector: 'app-modal',

@@ -12,28 +12,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { EvaluationComponent } from './evaluation/evaluation.component';
-import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
 import { MaterialModule } from './material-module';
 import { ModalComponent } from './modal/modal.component';
-import { EditableComponent } from './editable/editable.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker
-import { QuestionMaterialModule } from './question/question-material';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
+import { RubriqueComponent } from './rubrique/rubrique.component';
 registerLocaleData(fr);
 
 @NgModule({
   declarations: [
     AppComponent,
     EvaluationComponent,
-    RubriqueComponent,
     QuestionComponent,
     HomeComponent,
     ModalComponent,
-    EditableComponent
-
+    RubriqueComponent,
+    AjouterComponent
   ],
   imports: [
     BrowserModule,
@@ -44,13 +42,13 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     NzModalModule,
-    QuestionMaterialModule,
     ReactiveFormsModule,
     NzDatePickerModule,
     NzFormModule,
-    NzSelectModule
+    NzSelectModule,
+    MaterialModule
   ],
-  entryComponents: [ModalComponent,RubriqueComponent],
+  entryComponents: [ModalComponent],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
 })

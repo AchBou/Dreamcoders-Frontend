@@ -1,30 +1,31 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RubriqueService {
-
+  baseUrl:string = environment.baseLink;
   constructor(private http: HttpClient) {
 
    }
 
    getRubrique() : Observable<Rubrique []>{
-     return this.http.get<Rubrique []>("http://localhost:8080/rubrique/all");
+     return this.http.get<Rubrique []>(this.baseUrl+"/rubrique/all");
    }
    deleteRub(id:number) : Observable<boolean>{
-     return this.http.delete<boolean>("http://localhost:8080/rubrique/Supprimer/"+id);
+     return this.http.delete<boolean>(this.baseUrl+"/rubrique/Supprimer/"+id);
    }
    addRub(rubrique: Rubrique) : Observable<Rubrique>{
-     return this.http.post<Rubrique>("http://localhost:8080/rubrique/Create", rubrique);
+     return this.http.post<Rubrique>(this.baseUrl+"/rubrique/Create", rubrique);
    }
    updateRub(rubrique: Rubrique) : Observable<boolean>{
-     return this.http.post<boolean>("http://localhost:8080/rubrique/Update", rubrique);
+     return this.http.post<boolean>(this.baseUrl+"/rubrique/Update", rubrique);
    }
    ifLinked(id: number) : Observable<boolean> {
-     return this.http.get<boolean>("http://localhost:8080/rubrique/linked/"+id);
+     return this.http.get<boolean>(this.baseUrl+"/rubrique/linked/"+id);
 
    }
 }
