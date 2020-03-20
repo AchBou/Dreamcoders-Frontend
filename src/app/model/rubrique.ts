@@ -4,4 +4,5 @@ interface Rubrique {
   ordre:number,
   enseignant:Enseignant,
   designation:string,
+  updatable:true
 }

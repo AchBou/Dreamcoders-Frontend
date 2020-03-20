@@ -1,12 +1,12 @@
 table {
   width: 100%;
-  margin : auto;
+  margin: auto;
   table-layout: fixed;
 }
 
-.mat-elevation-z8{
+.mat-elevation-z8 {
   width: 100%;
-  margin : auto;
+  margin: auto;
   table-layout: fixed;
 }
 
@@ -14,34 +14,35 @@ table {
   text-align: center;
 }
 
-td.mat-cell{
+td.mat-cell {
   text-align: center;
 }
 
- td.mat-column-Intitule{
+td.mat-column-Intitule {
   text-align: left;
 }
-.filter{
+
+.filter {
   width: 80%;
 }
 
-.center{
+.center {
   text-align: center;
 }
 
-.addBtn{
+.addBtn {
   margin-left: 20px;
 }
 
-.dltBtn .cNlBtn{
-    margin-left: 20px;
+.dltBtn .cNlBtn {
+  margin-left: 20px;
 }
 
-mat-form-field{
+mat-form-field {
   width: 80%;
 }
 
-.spinner{
+.spinner {
   margin: 0;
   position: absolute;
   top: 40%;
