@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import { NgForm, Validators, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Validators, FormControl } from '@angular/forms';
 import { RubriqueService } from '../service/rubrique/rubrique.service';
+import { MatPaginator } from '@angular/material/paginator';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-rubrique',
@@ -10,167 +15,130 @@ import { RubriqueService } from '../service/rubrique/rubrique.service';
 })
 
 export class RubriqueComponent implements OnInit {
-  isVisible = false;
-  form = new FormGroup({
-  OrdreControl: new FormControl('', Validators.required),
-  DesControl: new FormControl('', Validators.required)
-});
 
+  lr: Rubrique[];
+  designationFormControl = new FormControl('', Validators.required);
+  displayedColumns: string[] = ['Designation', 'action'];
+  dataSource: any;
+  isLoaded = false;
+  mode: ProgressSpinnerMode = 'indeterminate';
 
-  //editCache: { [key: number]: { edit: boolean; data: Rubrique } } = {};
-  editCache: { edit: boolean; data: Rubrique }[] = [];
-  listOfData: Rubrique[] = [];
-  i=0;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(private modalService: NzModalService, public RubService : RubriqueService){}
+  constructor(public rubService: RubriqueService,
+    public dialog: MatDialog) { }
 
-
-  startEdit(id: number): void {
-    this.editCache[id].edit = true;
+  public ngOnInit(): void {
+    this.showRubriques();
   }
 
-  cancelEdit(id: number): void {
-    console.log(this.editCache[id].data);
-    const ruId = this.editCache[id].data;
-    const index = this.listOfData.findIndex(item => item.idRubrique === ruId.idRubrique);
-    this.editCache[id].edit= false;
-    this.editCache[id].data= this.listOfData[index];
+  changeDataSource() {
+    this.dataSource = new MatTableDataSource(this.lr);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  
+  showRubriques() {
+    this.rubService.getRubrique().subscribe(res => {
+      this.lr = res;
+      console.log(this.lr);
+      this.isLoaded = true
+      this.changeDataSource();
+    });
+  }
+  openDialog(msg: string): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '500px',
+      data: msg
+    });
+    dialogRef.afterClosed().subscribe();
   }
 
-  saveEdit(id: number): void {
-    if(this.editCache[id].data.designation != '' && this.editCache[id].data.ordre != null)
-    {
-    const rub = this.editCache[id].data;
-    console.log(rub);
-    const index = this.listOfData.findIndex(item => item.idRubrique === rub.idRubrique);
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
-      this.listOfData[index]= this.editCache[id].data;
-
-    this.editCache[id].edit = false;
-
-    this.RubService.updateRub(rub).subscribe(res=>{
-      if(res){
-        this.updateEditCache()
-        }
-        else{
-          this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation ');
+  editUpdate(idx: any) {
+    let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    this.rubService.ifLinked(this.lr[index].idRubrique).subscribe(res => {
+      if (!res) {
+        this.updateField(idx);
+      }
+      else {
+        this.openDialog('Cette rubrique est déjà évaluée. Elle ne peut pas être modifier!');
       }
     })
   }
-  else
-    this.showErrorModal('Les champs sont obligatoires');
-  }
 
-  updateEditCache(): void {
-    this.editCache = [];
-    this.listOfData.forEach(item => {
-      this.editCache.push({edit: false, data: item});
-    });
-  }
-
-
-  showDeleteModal(id: number): void {
-     this.modalService.confirm({
-       nzTitle: 'Confirmer Suppression',
-       nzContent: 'Etes-vous sûr de vouloir supprimer?',
-       nzOkText : 'Oui',
-       nzOkType : 'danger',
-       nzOnOk: () => this.remove(id),
-       nzOnCancel: () => console.log('Cancel'),
-     });
-   }
-
-   handleCancel(): void {
-     this.isVisible = false;
-   }
-
-   showErrorModal(s : string):void{
-     this.modalService.error({
-       nzTitle: 'Erreur',
-       nzContent : s,
-       nzOnOk : () => {this.handleCancel();}
-     });
-   }
-
-   showError(s : string):void{
-     this.modalService.error({
-       nzTitle: 'Erreur',
-       nzContent : s,
-       nzOnOk : () => {this.handleCancel(); this.showCreateModal();}
-     });
-   }
-
-   remove(id: number) :void {
-     const ruId = this.editCache[id].data;
-     this.RubService.deleteRub(ruId.idRubrique).subscribe(res=>{
-       if(res){
-         this.listOfData = this.listOfData.filter(d => d.idRubrique !== ruId.idRubrique);
-         this.updateEditCache();
-         }
-         else{
-           this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');
-       }
-     })
-
-  }
-
-  showCreateModal(): void {
-     this.isVisible=true;
-   }
-
-  destroyModal(): void {
-        this.isVisible=false;
-        }
-
- confirmRemove():boolean{
-          return true;
-        }
-
-onSubmitForm(f: NgForm){
-          f.value.type = "RBS";
-            console.log(f.value);
-        if(f.value.ordre != '' && f.value.designation != ''){
-          this.RubService.addRub(f.value).subscribe(res=>{
-            console.log(res);
-            this.ngOnInit();
-          });
-          this.destroyModal();
-        }
-        else{
-          this.showError('Remplissez les champs !');
-        }
-
-        }
-
-
-  editIsAuthorized(id : number){
-    const ruId = this.editCache[id].data.idRubrique;
-    this.RubService.ifLinked(ruId).subscribe(res=>{
-      if(!res)
-        {console.log (res);this.startEdit(id);}
-      else
-        {this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');
-         }
+  cancelUpdate(idx: any) {
+    let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    if (this.lr[index].idRubrique == null) {
+      this.lr.shift();
     }
-  )
+    this.updateField(idx);
   }
 
-  DeleteIsAuthorized(id : number){
-    const ruId = this.editCache[id].data.idRubrique;
-    this.RubService.ifLinked(ruId).subscribe(res=>{
-      if(!res)
-        {console.log (res);this.showDeleteModal(id);}
-      else
-        {this.showErrorModal('Cette rubrique est déjà utilisée dans une évaluation');}
+
+  updateField(idx: any) {
+    this.dataSource.data[idx].updatable = !this.dataSource.data[idx].updatable;
+  }
+
+
+  addField() {
+    this.lr.unshift({ idRubrique: null, ordre: null, type: "RBS", enseignant: null, designation: null, updatable: true });
+    this.changeDataSource();
+    this.paginator.firstPage();
+  }
+
+  confirm() {
+    console.log("confirm")
+  }
+
+  cancel() {
+    console.log('cancel')
+  }
+
+  edit(idx: any) {
+    let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    if (this.lr[index].designation != null) {
+      if (this.lr[index].idRubrique == null) this.add(index);
+      else if (this.lr[index].idRubrique != null) this.update(index);
+    }
+    else {
+      this.openDialog('Veuillez renseigner tous les champs obligatoires');
+    }
+  }
+
+  add(idx: any) {
+    this.rubService.addRub(this.lr[idx])
+      .subscribe(() => this.showRubriques());
+  }
+
+  update(idx: any) {
+    console.log(this.lr[idx]);
+
+    this.rubService.updateRub(this.lr[idx])
+      .subscribe(() => this.showRubriques());
+  }
+
+  remove(idx: any) {
+
+    this.rubService.ifLinked(idx).subscribe(res => {
+      if (!res) {
+        this.rubService.deleteRub(idx)
+          .subscribe(() => this.showRubriques());
+      }
+      else {
+        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être supprimée!');
+      }
     })
-  }
-
-  public ngOnInit(): void {
-    this.RubService.getRubrique().subscribe(response=>{
-      this.listOfData = response;
-    }, error=>{},
-    ()=>{ this.updateEditCache(); }
-    )
 
   }
+
+
 }

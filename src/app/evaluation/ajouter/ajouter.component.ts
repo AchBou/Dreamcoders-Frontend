@@ -35,7 +35,7 @@ export class AjouterComponent implements OnInit {
           this.page.ngOnInit();
         }
         else{
-          this.error();
+          this.error(Res.entity);
         }
       });
   }
@@ -46,11 +46,10 @@ export class AjouterComponent implements OnInit {
       nzContent: 'L\'évaluation a bien été crée'
     });
   }
-  error(): void {
+  error(message): void {
     this.modalService.error({
       nzTitle: 'Evaluation non ajoutée',
-      nzContent: 'erreur lors de la création de l\'evaluation \n'+
-                  '(les donnees ne respecte pas les contraintes de la BDD)'
+      nzContent: message
     });
   }
   getPromo(code_formation){
