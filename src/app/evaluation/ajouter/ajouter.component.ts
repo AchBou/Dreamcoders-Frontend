@@ -26,6 +26,7 @@ export class AjouterComponent implements OnInit {
   }
 
   submitForm(evaluation: EvaluationForm, f: NgForm){
+      evaluation.etat = "ELA";
       this.service.addEvaluation(evaluation).subscribe(Res=>{
         if(Res.status==200){
           this.success()

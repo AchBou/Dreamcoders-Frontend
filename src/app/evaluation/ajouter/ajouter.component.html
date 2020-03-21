@@ -1,45 +1,9 @@
 <form nz-form #f="ngForm" (ngSubmit)="submitForm(f.value, f)">
     <nz-form-item>
-        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="NoEval" nzRequired>No evaluation </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <input maxlength=2 nz-input (keypress)="numberOnly($event)" id="NoEval" type="text" name="no_evaluantion" ngModel required/>
-        </nz-form-control>
-    </nz-form-item >
-    <nz-form-item>
-        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Designation" nzRequired>Designation </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <input nz-input maxlength=16 id="Designation" type="text" name="designation" ngModel required/>
-        </nz-form-control>
-    </nz-form-item >
-    <nz-form-item>
-        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Etat" nzRequired>Etat </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <nz-select nzAllowClear nzPlaceHolder="l'état initial de l'evaluation" id="Etat" name="etat" ngModel required>
-                <nz-option nzLabel="En cours d'élaboration" nzValue="ELA"></nz-option>
-                <nz-option nzLabel="Mise à disposition" nzValue="DIS"></nz-option>
-                <nz-option nzLabel="Clôturé" nzValue="CLO"></nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item >
-    <nz-form-item>
-        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Periode">Periode </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24">
-            <input nz-input id="Periode" type="text" name="periode" ngModel/>
-        </nz-form-control>
-    </nz-form-item>
-    <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Formation" nzRequired>Formation </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
             <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la formation concerné par l'evaluation" id="Formation" name="code_formation" (ngModelChange)="getPromo($event); getUE($event)" ngModel required>
                 <nz-option style="width: max-content;" *ngFor="let form of formation" nzLabel="{{form.nomFormation}}" nzValue="{{form.codeFormation}}"></nz-option>
-            </nz-select>
-        </nz-form-control>
-    </nz-form-item >
-    <nz-form-item>
-        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Promotion" nzRequired>Promotion </nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la promotion concerné par l'evaluation" id="Promotion" name="annee_universitaire" ngModel required>
-                <nz-option style="width: max-content;" *ngFor="let prom of promotion" nzLabel="{{prom.anneeUniversitaire}}" nzValue="{{prom.anneeUniversitaire}}"></nz-option>
             </nz-select>
         </nz-form-control>
     </nz-form-item >
@@ -59,7 +23,18 @@
             </nz-select>
         </nz-form-control>
     </nz-form-item >
-
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Designation" nzRequired>Designation </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+            <input nz-input maxlength=16 id="Designation" type="text" name="designation" ngModel required/>
+        </nz-form-control>
+    </nz-form-item >
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Periode">Periode </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+            <input nz-input id="Periode" type="text" name="periode" ngModel/>
+        </nz-form-control>
+    </nz-form-item>
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="dateDebut" nzRequired>Date de début </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">

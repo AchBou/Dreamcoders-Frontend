@@ -2,7 +2,7 @@ interface Question {
   idQuestion:number,
   type:string,
   enseignant:Enseignant,
-  qualificatif:Qualificatif,
+  qualificatiff:Qualificatif,
   intitule:string,
   updatable:boolean
 }
