@@ -9,8 +9,10 @@ div.mat-dialog-content{
 }
 
 h1{
-  text-align: center;
+  text-align: left;
   color: red;
   font-size: 24px;
   font-weight: bold;
+  margin-bottom: 20px;
+
 }

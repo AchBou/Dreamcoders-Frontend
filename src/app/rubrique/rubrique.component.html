@@ -55,35 +55,12 @@
                   </td>
         </tr>
     </nz-table>
+-->
 
-<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
-    <div>
-      <div class="form-style-6">
-      <form  #f='ngForm'>
-        <h2>Création d'une rubrique</h2>
-        <div class="form-group">
-        <input type="text" name="type" placeholder="RBS" ngModel readonly/>
-        <input type="number" name="ordre" placeholder="Ordre" ngModel required/>
-        <div *ngIf="form.get('OrdreControl').touched && form.get('DesControl').invalid">
-          Ordre est obligatoire.
-        </div>
-        <input type="text" name="designation" placeholder="Désignation" ngModel required />
-        <div *ngIf="form.get('DesControl').touched && !form.get('DesControl').invalid">
-          Désignation est obligatoire.
-      </div>
-        <div *nzModalFooter>
-          <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
-          <button nz-button type="submit" value="submit" (click)="onSubmitForm(f)" id="AjoutBtn">Ajouter</button>
-        </div>
-      </div>
 
-      </form>
-    </div>
-    </div>
-</nz-modal> -->
 <div class="center">
   <mat-form-field class="filter">
-    <mat-label>Filter</mat-label>
+    <mat-label>Filtrer</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="rechercher">
   </mat-form-field>
   <button class="addBtn" (click)="addField()" mat-icon-button aria-label="Ajouter" color="primary">
@@ -99,12 +76,12 @@
 
     <!-- Designation Column -->
     <ng-container matColumnDef="Designation">
-      <th mat-header-cell *matHeaderCellDef> Designation </th>
+      <th mat-header-cell *matHeaderCellDef> Désignation </th>
       <td mat-cell *matCellDef="let element; let index=index">
         <mat-form-field *ngIf="this.dataSource.data[index].updatable">
           <input required matInput [(ngModel)]="element.designation" [formControl]="designationFormControl">
           <mat-error *ngIf="designationFormControl.hasError('required')">
-            Designation est<strong>Obligatoire</strong>
+            La désignation est<strong>obligatoire</strong>
           </mat-error>
         </mat-form-field>
         <span *ngIf="!this.dataSource.data[index].updatable">{{element.designation}}</span>
@@ -126,7 +103,7 @@
         </button>
 
 
-        <button nz-popconfirm nzPopconfirmTitle="Voulez vraiment supprimer cet enregistrement?" (nzOnConfirm)="remove(element.idRubrique)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn"
+        <button nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer cet enregistrement?" (nzOnConfirm)="remove(element.idRubrique)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn"
           *ngIf="!this.dataSource.data[index].updatable" mat-icon-button aria-label="Supprimer" color="warn">
           <mat-icon>delete</mat-icon>
         </button>
@@ -142,3 +119,26 @@
   </table>
   <mat-paginator onload="changeDataSource()" [pageSizeOptions]="[8]"></mat-paginator>
 </div>
+
+<!--
+<nz-modal [(nzVisible)]="isVisible" (nzOnCancel)="handleCancel()">
+    <div>
+      <div class="form-style-6">
+      <form  #f='ngForm'>
+        <h2>Création d'une rubrique</h2>
+        <div class="form-group">
+
+        <input type="text" name="designation" placeholder="Désignation" ngModel required />
+        <div *ngIf="form.get('DesControl').touched && !form.get('DesControl').invalid">
+          La désignation est obligatoire.
+      </div>
+        <div *nzModalFooter>
+          <button nz-button nzType="default" (click)="destroyModal()">Annuler</button>
+          <button nz-button type="submit" value="submit" (click)="onSubmitForm(f)" id="AjoutBtn">Ajouter</button>
+        </div>
+      </div>
+
+      </form>
+    </div>
+    </div>
+</nz-modal> -->

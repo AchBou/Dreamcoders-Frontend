@@ -7,8 +7,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./dialog.component.css']
 })
 export class DialogComponent implements OnInit {
+
+
   constructor(
-   public dialogRef: MatDialogRef<DialogComponent>,@Inject(MAT_DIALOG_DATA) public data: string) {}
+   public dialogRef: MatDialogRef<DialogComponent>,@Inject(MAT_DIALOG_DATA) public data: string ) {}
 
    onNoClick(): void {
      this.dialogRef.close();

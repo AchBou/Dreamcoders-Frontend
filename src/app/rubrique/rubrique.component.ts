@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormControl } from '@angular/forms';
+import { Validators, FormControl, NgForm } from '@angular/forms';
 import { RubriqueService } from '../service/rubrique/rubrique.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-rubrique',
@@ -26,19 +27,20 @@ export class RubriqueComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(public rubService: RubriqueService,
-    public dialog: MatDialog) { }
+  constructor(public rubService: RubriqueService,public dialog: MatDialog) { }
 
   public ngOnInit(): void {
     this.showRubriques();
   }
 
   changeDataSource() {
+
     this.dataSource = new MatTableDataSource(this.lr);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
   }
-  
+
   showRubriques() {
     this.rubService.getRubrique().subscribe(res => {
       this.lr = res;
@@ -47,11 +49,12 @@ export class RubriqueComponent implements OnInit {
       this.changeDataSource();
     });
   }
-  openDialog(msg: string): void {
+  openDialog(msg: string,titre: string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
-      data: msg
-    });
+      data: { message : msg, title : titre}
+    },
+    );
     dialogRef.afterClosed().subscribe();
   }
 
@@ -70,7 +73,7 @@ export class RubriqueComponent implements OnInit {
         this.updateField(idx);
       }
       else {
-        this.openDialog('Cette rubrique est déjà évaluée. Elle ne peut pas être modifier!');
+        this.openDialog('Cette rubrique est déjà utilisée dans une évaluation!','Opération interdite');
       }
     })
   }
@@ -110,13 +113,15 @@ export class RubriqueComponent implements OnInit {
       else if (this.lr[index].idRubrique != null) this.update(index);
     }
     else {
-      this.openDialog('Veuillez renseigner tous les champs obligatoires');
+      this.openDialog('Veuillez renseigner tous les champs obligatoires!','Erreur');
     }
   }
 
   add(idx: any) {
-    this.rubService.addRub(this.lr[idx])
+
+     this.rubService.addRub(this.lr[idx])
       .subscribe(() => this.showRubriques());
+
   }
 
   update(idx: any) {
@@ -134,11 +139,30 @@ export class RubriqueComponent implements OnInit {
           .subscribe(() => this.showRubriques());
       }
       else {
-        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être supprimée!');
+        this.openDialog('Cette question est déjà utilisée dans une évaluation!','Action interdite');
       }
     })
 
   }
+/*
+  destroyModal(): boolean {
+    this.modal.destroy();
+    return false;
+  }
 
+  confirmRemove():boolean{
+    return true;
+  }
+
+  onSubmitForm(f: NgForm){
+    f.value.type = "RBS";
+      console.log(f.value);
+    this.rubService.addRub(f.value).subscribe(res=>{
+      console.log(res);
+      this.ngOnInit();
+    });
+    this.destroyModal();
+  }
+*/
 
 }

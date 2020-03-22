@@ -1,6 +1,6 @@
 <div class="center">
   <mat-form-field class="filter">
-    <mat-label>Filter</mat-label>
+    <mat-label>Filtrer</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="rechercher">
   </mat-form-field>
   <button class="addBtn" (click)="addField()" mat-icon-button aria-label="Ajouter" color="primary">
@@ -21,7 +21,7 @@
         <mat-form-field *ngIf="this.dataSource.data[index].updatable">
           <input required matInput [(ngModel)]="element.intitule" [formControl]="intituleFormControl">
           <mat-error *ngIf="intituleFormControl.hasError('required')">
-            Intitule est<strong> Obligatoire</strong>
+            L'intitulé est<strong> Obligatoire</strong>
           </mat-error>
         </mat-form-field>
         <span *ngIf="!this.dataSource.data[index].updatable">{{element.intitule}}</span>
@@ -41,7 +41,7 @@
               {{qualif.minimal}}-{{qualif.maximal}}
             </mat-option>
           </mat-select>
-          <mat-error *ngIf="qualificatifControl.hasError('required')">Veuillez choisir un couple qualificatif</mat-error>
+          <mat-error *ngIf="qualificatifControl.hasError('required')">Veuillez choisir un couple de qualificatifs</mat-error>
           <mat-hint>{{qualificatifControl.value?.sound}}</mat-hint>
         </mat-form-field>
         <span *ngIf="!this.dataSource.data[index].updatable && element.qualificatif!=null">
@@ -55,7 +55,7 @@
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element; let index=index">
-        <button nz-popconfirm nzPopconfirmTitle="Voulez vraiment valider cet enregistrement?" (nzOnConfirm)="edit(index)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" *ngIf="this.dataSource.data[index].updatable" mat-icon-button
+        <button nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment valider cette question?" (nzOnConfirm)="edit(index)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" *ngIf="this.dataSource.data[index].updatable" mat-icon-button
           aria-label="Valider" color="primary">
           <mat-icon>done</mat-icon>
         </button>
@@ -64,7 +64,7 @@
         </button>
 
 
-        <button nz-popconfirm nzPopconfirmTitle="Voulez vraiment supprimer cet enregistrement?" (nzOnConfirm)="remove(element.idQuestion)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn"
+        <button nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer cette question?" (nzOnConfirm)="remove(element.idQuestion)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn"
           *ngIf="!this.dataSource.data[index].updatable" mat-icon-button aria-label="Supprimer" color="warn">
           <mat-icon>delete</mat-icon>
         </button>

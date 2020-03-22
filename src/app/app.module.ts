@@ -33,7 +33,7 @@ registerLocaleData(fr);
     AjouterComponent,
     DialogComponent,
     RubriqueComponent,
-    ModalComponent 
+    ModalComponent
   ],
   imports: [
     BrowserModule,
