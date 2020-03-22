@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
+import { AppComponent } from '../app.component';
 
 
 
@@ -36,13 +37,19 @@ export class QuestionComponent implements OnInit {
 
   constructor(private qservice: QuestionService,
     private qualiService: QualificatifService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private app: AppComponent) { }
 
   ngOnInit() {
     this.showQuestions();
     this.listQualificatifs();
+    this.app.setTitle('Liste des questions standards');
+
   }
 
+  ngOnDestroy(){
+    this.app.setTitle("");
+  }
+  
   openDialog(msg: string, titre: string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',

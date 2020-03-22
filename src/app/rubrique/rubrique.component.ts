@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
 import { NzModalRef } from 'ng-zorro-antd/modal';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-rubrique',
@@ -30,10 +31,15 @@ export class RubriqueComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(public rubService: RubriqueService,public dialog: MatDialog) { }
+  constructor(public rubService: RubriqueService,public dialog: MatDialog, private app:AppComponent) { }
 
   public ngOnInit(): void {
     this.showRubriques();
+    this.app.setTitle('Liste des rubriques standards');
+  }
+  
+  ngOnDestroy(){
+    this.app.setTitle("");
   }
 
   changeDataSource() {
