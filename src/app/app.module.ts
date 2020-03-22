@@ -41,7 +41,8 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     NzModalModule,
-    QuestionMaterialModule
+    QuestionMaterialModule,
+    NzModalModule
   ],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]

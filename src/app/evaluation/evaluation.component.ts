@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EvaluationService } from './evaluation.service';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { AppComponent } from '../app.component';
 
@@ -10,17 +12,39 @@ import { AppComponent } from '../app.component';
 })
 export class EvaluationComponent implements OnInit {
   evaluations: Object[] = [];
+  isVisible = false;
+
   ngOnInit(){
     this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
     console.log(evaluations)});
     this.app.setTitle("");
 
   }
- constructor(private evaluationService: EvaluationService, private app:AppComponent){}
+ constructor(private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
   
   ngOnDestroy(){
   }
 
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  showConfirm(): void {
+    this.modalService.confirm({
+      nzTitle: 'Confirm',
+      nzContent: 'Bla bla ...',
+      nzOkText: 'OK',
+      nzCancelText: 'Cancel'
+    });
+  }
 
   /*listOfData: Evaluation[] = [
     { designation: 'evaluation1',

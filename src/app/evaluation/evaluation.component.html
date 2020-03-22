@@ -1,18 +1,14 @@
 <br>
 <div nz-row>
     <div nz-col nzSpan="8">
-        <button nz-button nzType="primary">Créer une évaluation</button>
-    </div>
-    <div nz-col nzSpan="8" nzOffset="8">
-        <nz-input-group nzWidth="15%" [nzSuffix]="suffixIconSearch">
-            <input type="text" nz-input placeholder="Chercher une évaluation" />
-        </nz-input-group>
-        <ng-template #suffixIconSearch>
-            <i nz-icon nzType="search"></i>
-        </ng-template>
+        <button nz-button nzType="primary" (click)="showModal()">Créer une évaluation</button>
     </div>
 </div>
-
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Modal" nzOkText="Ok" nzCancelText="Cancel" (nzOnOk)="handleOk()" (nzOnCancel)="handleCancel()">
+    <p>Bla bla ...</p>
+    <p>Bla bla ...</p>
+    <p>Bla bla ...</p>
+</nz-modal>
 <nz-table nzBordered [nzData]="evaluations">
     <thead>
         <tr>
