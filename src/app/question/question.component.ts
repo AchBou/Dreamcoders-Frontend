@@ -42,16 +42,11 @@ export class QuestionComponent implements OnInit {
     this.app.setTitle('Liste des questions standards');
 
   }
-
-<<<<<<< HEAD
   ngOnDestroy(){
     this.app.setTitle("");
   }
   
-  openDialog(msg: string, titre: string): void {
-=======
   openDialog(msg: string): void {
->>>>>>> parent of 122821a... Merge branch 'master' of github.com:AchBou/Dreamcoders-Frontend
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
       data: msg
