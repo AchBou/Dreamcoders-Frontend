@@ -26,6 +26,8 @@ export class AjouterComponent implements OnInit {
   }
 
   submitForm(evaluation: EvaluationForm, f: NgForm){
+      evaluation.etat = "ELA";
+      evaluation.no_evaluantion = 1;
       this.service.addEvaluation(evaluation).subscribe(Res=>{
         if(Res.status==200){
           this.success()
@@ -34,7 +36,7 @@ export class AjouterComponent implements OnInit {
           this.page.ngOnInit();
         }
         else{
-          this.error();
+          this.error(Res.entity);
         }
       });
   }
@@ -45,11 +47,10 @@ export class AjouterComponent implements OnInit {
       nzContent: 'L\'évaluation a bien été crée'
     });
   }
-  error(): void {
+  error(message): void {
     this.modalService.error({
       nzTitle: 'Evaluation non ajoutée',
-      nzContent: 'erreur lors de la création de l\'evaluation \n'+
-                  '(cette évaluation existe déja)'
+      nzContent: message
     });
   }
   getPromo(code_formation){
