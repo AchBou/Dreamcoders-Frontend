@@ -28,9 +28,6 @@ export class QuestionComponent implements OnInit {
   isLoaded = false;
   newQualif = null;
   mode: ProgressSpinnerMode = 'indeterminate';
-  isUpdating: boolean;
-  newIntitule : string;
-
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -45,15 +42,14 @@ export class QuestionComponent implements OnInit {
     this.app.setTitle('Liste des questions standards');
 
   }
-
   ngOnDestroy(){
     this.app.setTitle("");
   }
   
-  openDialog(msg: string, titre: string): void {
+  openDialog(msg: string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
-      data: { message : msg, title : titre}
+      data: msg
     });
     dialogRef.afterClosed().subscribe();
   }
@@ -69,8 +65,6 @@ export class QuestionComponent implements OnInit {
       console.log(this.lq);
       this.isLoaded = true
       this.changeDataSource();
-      this.isUpdating = false;
-
     });
   }
 
@@ -92,26 +86,22 @@ export class QuestionComponent implements OnInit {
 
 
   editUpdate(idx: any) {
-    if(!this.isUpdating){
     let index = this.paginator.pageIndex == 0 ?  idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    this.newIntitule = this.lq[index].intitule;
-    this.newQualif = this.lq[index].qualificatif;
-
     this.qservice.checkValidity(this.lq[index].idQuestion).subscribe(res => {
       if (!res) {
         this.updateField(idx);
       }
       else {
-        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être modifiée!','Opération interdite');
-        }
-      })
-    }
+        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être modifier!');
+      }
+    })
   }
 
   cancelUpdate(idx: any) {
+
+
     let index = this.paginator.pageIndex == 0 ?  idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
     if (this.lq[index].idQuestion == null) {
-      this.updateField(idx);
       this.lq.shift();
       this.changeDataSource();
     }
@@ -123,20 +113,15 @@ export class QuestionComponent implements OnInit {
 
   updateField(idx: any) {
     this.dataSource.data[idx].updatable = !this.dataSource.data[idx].updatable;
-    this.isUpdating = !this.isUpdating;
-
   }
 
 
   addField() {
-    if(!this.isUpdating){
+
     this.lq.unshift({ idQuestion: null, type: "QUS", enseignant: null, qualificatif: { idQualificatif: null, maximal: null, minimal: null }, intitule: null, updatable: true });
     this.changeDataSource();
-    this.isUpdating = true;
-    this.newIntitule = "";
     this.paginator.firstPage();
   }
-}
 
   confirm() {
     console.log("confirm")
@@ -149,19 +134,14 @@ export class QuestionComponent implements OnInit {
   edit(idx: any) {
   let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
     this.lq[index].qualificatif = this.newQualif;
-    if (this.newIntitule) {
-      console.log(this.newIntitule);
-      this.lq[index].intitule = this.newIntitule;
-      if (this.lq[index].intitule != null && this.lq[index].qualificatif != null) {
+    if (this.lq[index].intitule != null && this.lq[index].qualificatif != null) {
       if (this.lq[index].idQuestion == null) this.add(index);
       else if (this.lq[index].idQuestion != null) this.update(index);
     }
-  }
     else {
-      this.openDialog('Veuillez renseigner tous les champs obligatoires','Erreur');
+      this.openDialog('Veuillez renseigner tous les champs obligatoires');
     }
-
-}
+  }
 
   add(i: any) {
 
@@ -182,7 +162,7 @@ export class QuestionComponent implements OnInit {
           .subscribe(() => this.showQuestions());
       }
       else {
-        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être supprimée!','Opération interdite');
+        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être supprimée!');
       }
     })
 
