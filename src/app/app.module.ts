@@ -22,6 +22,8 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { DialogComponent } from './dialog/dialog.component';
 import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
+import { EvaluationRubriqueComponent } from './evaluation/rubrique/rubrique.component'
+import { EvaluationQuestionComponent } from './evaluation/rubrique/question/question.component'
 registerLocaleData(fr);
 
 @NgModule({
@@ -33,7 +35,9 @@ registerLocaleData(fr);
     AjouterComponent,
     DialogComponent,
     RubriqueComponent,
-    ModalComponent
+    ModalComponent,
+    EvaluationRubriqueComponent,
+    EvaluationQuestionComponent
   ],
   imports: [
     BrowserModule,
