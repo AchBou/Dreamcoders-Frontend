@@ -1,0 +1,53 @@
+table {
+    width: 100%;
+    margin: auto;
+    table-layout: fixed;
+  }
+  
+  .mat-elevation-z8 {
+    width: 100%;
+    margin: auto;
+    table-layout: fixed;
+  }
+  
+  .mat-header-cell {
+    text-align: center;
+  }
+  
+  td.mat-cell {
+    text-align: center;
+  }
+  
+  td.mat-column-Intitule {
+    text-align: left;
+  }
+  
+  .filter {
+    width: 80%;
+  }
+  
+  .center {
+    text-align: center;
+  }
+  
+  .addBtn {
+    margin-left: 20px;
+  }
+  
+  .dltBtn .cNlBtn {
+    margin-left: 20px;
+  }
+  
+  mat-form-field {
+    width: 80%;
+  }
+  
+  .spinner {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
