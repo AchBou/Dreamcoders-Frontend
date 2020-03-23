@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { QuestionEva } from 'src/app/model/question_evaluation';
 
 @Component({
   selector: 'app-evaluation-question',
@@ -7,15 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EvaluationQuestionComponent implements OnInit {
   
-  lq: any;
+  lq: QuestionEva[];
+  questions: Question[] = [{idQuestion: 342, intitule : "contenu de support", type :"QUS", enseignant :null, qualificatif : { idQualificatif :2, maximal : "Faible", minimal:"Fort"}, updatable: false},
+                            {idQuestion:1,intitule:"Contenus",type:"QUS",enseignant:null,qualificatif:{idQualificatif:41,maximal:"Mauvaise",minimal:"Tres Bonne"}, updatable: false},
+                            {idQuestion:2,intitule:"Intérêt",type:"QUS",enseignant:null,qualificatif:{idQualificatif:24,maximal:"Insuffisant",minimal:"Excessif"}, updatable: false}]
   displayedColumns: string[] = ['Intitule', 'Qualificatif', 'action'];
 
   constructor() { }
 
   ngOnInit() {
-    this.lq= [{idQuestion: 342, intitule : "contenu de support", type :"QUS", enseignant :null, qualificatif : { idQualificatif :2, maximal : "Faible", minimal:"Fort"}},
-              {idQuestion:1,intitule:"Contenus",type:"QUS",enseignant:null,qualificatif:{idQualificatif:41,maximal:"Mauvaise",minimal:"Tres Bonne"}},
-              {idQuestion:2,intitule:"Intérêt",type:"QUS",enseignant:null,qualificatif:{idQualificatif:24,maximal:"Insuffisant",minimal:"Excessif"}}];
+    this.lq= [{idQuestionEvaluation: 1, ordre: 1, question: this.questions[0] },
+              {idQuestionEvaluation: 2, ordre: 2, question: this.questions[1] },
+              {idQuestionEvaluation: 3, ordre: 3, question: this.questions[2] }]
+    
+    
   }
 
   remove(idx: any) {
