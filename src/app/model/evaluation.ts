@@ -6,10 +6,10 @@ interface Evaluation {
   etat:string,
   noEvaluation: number
   periode:string,
-  elementConstitutiff:ElementConstitutif,
-  enseignantt:Enseignant,
-  promotionn:Promotion,
-  uniteEnseignementt: UniteEnseignement
+  elementConstitutif:ElementConstitutif,
+  enseignant:Enseignant,
+  promotion:Promotion,
+  uniteEnseignement: UniteEnseignement
 }
 interface EvaluationForm{
   code_formation: String,
