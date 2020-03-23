@@ -24,6 +24,7 @@ import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { EvaluationRubriqueComponent } from './evaluation/rubrique/rubrique.component'
 import { EvaluationQuestionComponent } from './evaluation/rubrique/question/question.component'
+import {MatCheckboxModule} from '@angular/material/checkbox'; 
 registerLocaleData(fr);
 
 @NgModule({
@@ -52,7 +53,8 @@ registerLocaleData(fr);
     NzDatePickerModule,
     NzFormModule,
     NzSelectModule,
-    MaterialModule
+    MaterialModule,
+    MatCheckboxModule
   ],
   entryComponents:[DialogComponent,ModalComponent],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],

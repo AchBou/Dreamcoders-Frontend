@@ -20,10 +20,11 @@ table {
   
   td.mat-column-Intitule {
     text-align: left;
+    padding-left: 4%;
   }
   
   .filter {
-    width: 80%;
+    width: 100%;
   }
   
   .center {
@@ -50,4 +51,10 @@ table {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
-  
+  .Checkbox {
+    width: max-content;
+  }
+  .table-container{
+    height: 300px;
+    overflow: auto;
+  }
