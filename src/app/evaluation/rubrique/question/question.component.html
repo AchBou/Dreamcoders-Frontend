@@ -1,7 +1,7 @@
 <button class="addBtn" (click)="showAddModal()" mat-icon-button aria-label="Ajouter" color="primary">
     <mat-icon>add</mat-icon>
   </button>
-    <table mat-table [dataSource]="lq">
+    <table mat-table [dataSource]="lq.concat(createCache)">
   
       <!-- Intitule Column -->
       <ng-container matColumnDef="Intitule">
@@ -16,7 +16,7 @@
       <ng-container matColumnDef="Qualificatif">
         <th mat-header-cell *matHeaderCellDef>Qualificatif </th>
         <td mat-cell *matCellDef="let element; let index=index">
-          <span>{{element.question.qualificatif.maximal}} - {{element.question.qualificatif.minimal}}</span>
+          <div class="left">{{element.question.qualificatif.maximal}}</div> - <div class="right">{{element.question.qualificatif.minimal}}</div>
         </td>
       </ng-container>
   
@@ -36,6 +36,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+    <button nz-button nzType="primary" [disabled]="!createCache.length && !deleteCache.length" type="submit" (click)="save()" id="AjoutBtn">Save</button>
   
     <nz-modal nzWidth="55%" [nzStyle]="{top: '35px'}" [(nzVisible)]="isVisible" nzTitle="Ajouter des questions" (nzOnCancel)="destroyModal()">
         <div class="center">
@@ -61,7 +62,7 @@
             <ng-container matColumnDef="Intitule">
                 <th mat-header-cell *matHeaderCellDef> Intitulé </th>
                 <td mat-cell *matCellDef="let element; let index=index">
-                <span class="center">{{element.intitule}}</span>
+                <span>{{element.intitule}}</span>
                 </td>
             </ng-container>
         
@@ -70,7 +71,7 @@
             <ng-container matColumnDef="Qualificatif">
                 <th mat-header-cell *matHeaderCellDef>Qualificatif </th>
                 <td mat-cell *matCellDef="let element; let index=index">
-                <span>{{element.qualificatif.maximal}} - {{element.qualificatif.minimal}}</span>
+                <div class="left">{{element.qualificatif.maximal}}</div> - <div class="right">{{element.qualificatif.minimal}}</div>
                 </td>
             </ng-container>
           
