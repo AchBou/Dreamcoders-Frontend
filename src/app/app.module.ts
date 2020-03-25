@@ -1,36 +1,41 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NzModalModule } from 'ng-zorro-antd/modal';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IconsProviderModule } from './icons-provider.module';
 import { NgZorroAntdModule, NZ_I18N, fr_FR } from 'ng-zorro-antd';
-import { FormsModule } from '@angular/forms';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
-
-
-
 import { EvaluationComponent } from './evaluation/evaluation.component';
-import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
-import { QuestionMaterialModule } from './question/question-material';
-
-
+import { MaterialModule } from './material-module';
+import { ModalComponent } from './modal/modal.component';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { DialogComponent } from './dialog/dialog.component';
+import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
+import { RubriqueComponent } from './rubrique/rubrique.component';
+import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
 registerLocaleData(fr);
 
 @NgModule({
   declarations: [
     AppComponent,
     EvaluationComponent,
-    RubriqueComponent,
     QuestionComponent,
-    HomeComponent
-    
+    HomeComponent,
+    AjouterComponent,
+    DialogComponent,
+    RubriqueComponent,
+    ModalComponent,
+    ModifierComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +46,14 @@ registerLocaleData(fr);
     HttpClientModule,
     BrowserAnimationsModule,
     NzModalModule,
-    QuestionMaterialModule,
-    NzModalModule
+    NzModalModule,
+    ReactiveFormsModule,
+    NzDatePickerModule,
+    NzFormModule,
+    NzSelectModule,
+    MaterialModule
   ],
+  entryComponents:[DialogComponent,ModalComponent],
   providers: [{ provide: NZ_I18N, useValue: fr_FR }],
   bootstrap: [AppComponent]
 })

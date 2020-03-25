@@ -1,7 +1,8 @@
 interface Rubrique {
-  id:number,
+  idRubrique:number,
   type:string,
   ordre:number,
   enseignant:Enseignant,
   designation:string,
+  updatable:true
 }

@@ -1,42 +1,189 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { QuestionService } from '../service/question/question.service';
+import { QualificatifService } from '../service/qualificatif/qualificatif.service';
+import { FormControl, Validators } from '@angular/forms';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.css']
 })
-export class QuestionComponent implements OnInit {
 
-  constructor() { }
+export class QuestionComponent implements OnInit {
+  lq: Question[];
+  lqua: Qualificatif[];
+  qualificatifControl = new FormControl('', Validators.required);
+  intituleFormControl = new FormControl('', Validators.required);
+  displayedColumns: string[] = ['Intitule', 'Qualificatif', 'action'];
+  dataSource: any;
+  isLoaded = false;
+  newQualif = null;
+  mode: ProgressSpinnerMode = 'indeterminate';
+  isUpdating: boolean;
+  newIntitule : string;
+
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  constructor(private qservice: QuestionService,
+    private qualiService: QualificatifService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
+    this.showQuestions();
+    this.listQualificatifs();
   }
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-    dataSource = new MatTableDataSource(ELEMENT_DATA);
 
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
+  openDialog(msg: string, titre: string): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '500px',
+      data: { message : msg, title : titre}
+    });
+    dialogRef.afterClosed().subscribe();
+  }
+  changeDataSource() {
+    this.dataSource = new MatTableDataSource(this.lq);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  showQuestions() {
+    this.qservice.getQuestions().subscribe(res => {
+      this.lq = res;
+      console.log(this.lq);
+      this.isLoaded = true
+      this.changeDataSource();
+      this.isUpdating = false;
+
+    });
+  }
+
+
+  listQualificatifs() {
+    this.qualiService.getQualificatifs().subscribe(res => {
+      this.lqua = res;
+      console.log(this.lqua);
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
+  }
+
+
+  editUpdate(idx: any) {
+    if(!this.isUpdating){
+    let index = this.paginator.pageIndex == 0 ?  idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    this.newIntitule = this.lq[index].intitule;
+    this.newQualif = this.lq[index].qualificatif;
+
+    this.qservice.checkValidity(this.lq[index].idQuestion).subscribe(res => {
+      if (!res) {
+        this.updateField(idx);
+      }
+      else {
+        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être modifiée!','Opération interdite');
+        }
+      })
+    }
+  }
+
+  cancelUpdate(idx: any) {
+    let index = this.paginator.pageIndex == 0 ?  idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    if (this.lq[index].idQuestion == null) {
+      this.updateField(idx);
+      this.lq.shift();
+      this.changeDataSource();
+    }
+    else{
+      this.updateField(idx);
+    }
+  }
+
+
+  updateField(idx: any) {
+    this.dataSource.data[idx].updatable = !this.dataSource.data[idx].updatable;
+    this.isUpdating = !this.isUpdating;
+
+  }
+
+
+  addField() {
+    if(!this.isUpdating){
+    this.lq.unshift({ idQuestion: null, type: "QUS", enseignant: null, qualificatif: { idQualificatif: null, maximal: null, minimal: null }, intitule: null, updatable: true });
+    this.changeDataSource();
+    this.isUpdating = true;
+    this.newIntitule = "";
+    this.paginator.firstPage();
+  }
+}
+
+  confirm() {
+    console.log("confirm")
+  }
+
+  cancel() {
+    console.log('cancel')
+  }
+
+  edit(idx: any) {
+  let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    this.lq[index].qualificatif = this.newQualif;
+    if (this.newIntitule) {
+      console.log(this.newIntitule);
+      this.lq[index].intitule = this.newIntitule;
+      if (this.lq[index].intitule != null && this.lq[index].qualificatif != null) {
+      if (this.lq[index].idQuestion == null) this.add(index);
+      else if (this.lq[index].idQuestion != null) this.update(index);
+    }
+  }
+    else {
+      this.openDialog('Veuillez renseigner tous les champs obligatoires','Erreur');
+    }
+
+}
+
+  add(i: any) {
+
+    this.qservice.addQuestion(this.lq[i])
+      .subscribe(() => this.showQuestions());
+  }
+
+  update(i: any) {
+
+    this.qservice.updateQuestion(this.lq[i])
+      .subscribe(() => this.showQuestions());
+  }
+
+  remove(idx: any) {
+    this.qservice.checkValidity(idx).subscribe(res => {
+      if (!res) {
+        this.qservice.deleteQuestion(idx)
+          .subscribe(() => this.showQuestions());
+      }
+      else {
+        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être supprimée!','Opération interdite');
+      }
+    })
+
+  }
+
+
+  changeQualif(event: any) {
+    this.newQualif = this.lqua.filter(element => element.idQualificatif == event.value)[0];
+  }
+
 }

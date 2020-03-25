@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEvaluation : 'http://localhost:8080/eval/all'
+  baseLink : 'http://localhost:8080'
 };
 
 /*

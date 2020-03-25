@@ -1,0 +1,56 @@
+<form nz-form #f="ngForm" (ngSubmit)="submitForm(f.value, f)">
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Formation" nzRequired>Formation </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="la formation concerné par l'evaluation" id="Formation" name="code_formation" (ngModelChange)="getPromo($event); getUE($event)" ngModel required>
+                <nz-option style="width: max-content;" *ngFor="let form of formation" nzLabel="{{form.nomFormation}}" nzValue="{{form.codeFormation}}"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item >
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="UE" nzRequired>Unite d'enseignement </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Evaluation sur quelle UE" id="UE" name="code_ue" (ngModelChange)="getEC($event, f)" ngModel required>
+                <nz-option style="width: max-content;" *ngFor="let u of ue"  nzLabel="{{u.designation}}" nzValue="{{u.id.codeUe}}"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item >
+    <nz-form-item [hidden]="EcHidden">
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="EC" >Element constitutif </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+            <nz-select nzShowSearch nzAllowClear [nzDisabled]="EcHidden" nzPlaceHolder="Evaluation porte sur quelle EC" id="EC" name="code_ec" ngModel>
+                <nz-option style="width: max-content;" *ngFor="let e of ec" nzLabel="{{e.designation}}" nzValue="{{e.id.codeEc}}"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item >
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Designation" nzRequired>Designation </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+            <input nz-input maxlength=16 id="Designation" type="text" name="designation" ngModel required/>
+        </nz-form-control>
+    </nz-form-item >
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="Periode">Periode </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24">
+            <input nz-input id="Periode" type="text" name="periode" ngModel/>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="dateDebut" nzRequired>Date de début </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+          <nz-date-picker [nzDisabledDate]="disabledStartDate" nzFormat="dd/MM/yyyy" id="dateDebut" nzPlaceHolder="Début de réponses" name="debut_reponse" (ngModelChange)="OnDateChange($event)" ngModel [nzShowToday]="false" required></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="dateFin" nzRequired>Date de fin </nz-form-label>
+        <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
+          <nz-date-picker nzFormat="dd/MM/yyyy" id="dateFin" nzPlaceHolder="Fin de réponses" name="fin_reponse" [nzShowToday]="false" ngModel required
+          [nzDisabledDate]="disabledEndDate"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" [disabled]="f.invalid" style="margin-right: 10%; float: right;">Créer</button>
+        </nz-form-control>
+      </nz-form-item>
+</form>

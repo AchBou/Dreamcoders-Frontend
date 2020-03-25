@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { EvaluationService } from './evaluation.service';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppComponent } from '../app.component';
+import { EvaluationService } from '../service/evaluation/evaluation.service';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-evaluation',
@@ -11,22 +14,62 @@ import { AppComponent } from '../app.component';
   styleUrls: ['./evaluation.component.css']
 })
 export class EvaluationComponent implements OnInit {
-  evaluations: Object[] = [];
-  isVisible = false;
+
+  evaluations: Evaluation[];
+  isVisible : boolean = false;
+  isModifVisible: boolean = false;
+  isLoaded = false;
+  displayedColumns: string[] = ['designation','enseignant','formation','promotion','etat','debReponse','finReponse','uEns','uConst', 'action'];
+  dataSource: any;
+  mode: ProgressSpinnerMode = 'indeterminate';
+  editedEval: Evaluation = null;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   ngOnInit(){
-    this.evaluationService.getAllEval().subscribe((evaluations) => {this.evaluations = evaluations;
-    console.log(evaluations)});
-    this.app.setTitle("");
+    this.showEvaluations();
+    this.app.setTitle("Liste des évaluations");
+  }
 
+  showEvaluations() {
+    this.evaluationService.getAllEval().subscribe((res) => {this.evaluations = res;
+    console.log(this.evaluations);
+    this.isLoaded = true
+    this.changeDataSource();});
   }
  constructor(private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
   
+
+  confirm() {
+    console.log("confirm")
+  }
+
+  cancel() {
+    console.log('cancel')
+  }
+
+  changeDataSource() {
+    this.dataSource = new MatTableDataSource(this.evaluations);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   ngOnDestroy(){
+    this.app.setTitle("");
   }
 
   showModal(): void {
     this.isVisible = true;
+  }
+  showModalModification(evaluation: Evaluation): void {
+    this.editedEval = evaluation; 
+    this.isModifVisible = true;
+    console.log(this.editedEval);
+
+  }
+  publier(){
+    
   }
 
   handleOk(): void {
@@ -37,6 +80,7 @@ export class EvaluationComponent implements OnInit {
     this.isVisible = false;
   }
 
+
   showConfirm(): void {
     this.modalService.confirm({
       nzTitle: 'Confirm',
@@ -46,55 +90,9 @@ export class EvaluationComponent implements OnInit {
     });
   }
 
-  /*listOfData: Evaluation[] = [
-    { designation: 'evaluation1',
-      etat: 'active',
-      debutReponse: '11/03/2020',
-      finReponse: '20/04/2020',
-      promotion: '2019/2020',
-      formation: 'M2 DOSI',
-      enseignant: 'Philippe SALIOU',
-      uniteEnseignement: 'ProA',
-      elementEnseignement: ''},
-  { designation: 'evaluation2',
-  etat: 'terminée',
-  debutReponse: '20/01/2020',
-  finReponse: '30/02/2020',
-  promotion: '2019/2020',
-  formation: 'M2 DOSI',
-  enseignant: 'Philippe SALIOU',
-  uniteEnseignement: 'BI',
-  elementEnseignement: ''},
-  { designation: 'evaluation3',
-  etat: 'terminée',
-  debutReponse: '02/02/2020',
-  finReponse: '30/02/2020',
-  promotion: '2019/2020',
-  formation: 'M2 DOSI',
-  enseignant: 'Philippe SALIOU',
-  uniteEnseignement: 'BA',
-  elementEnseignement: 'BD' },
-  { designation: 'evaluation4',
-  etat: 'terminée',
-  debutReponse: '02/02/2020',
-  finReponse: '30/02/2020',
-  promotion: '2019/2020',
-  formation: 'M2 DOSI',
-  enseignant: 'Philippe SALIOU',
-  uniteEnseignement: 'BA',
-  elementEnseignement: 'DA'},
-  { designation: 'evaluation5',
-  etat: 'terminée',
-  debutReponse: '12/12/2019',
-  finReponse: '15/01/2020',
-  promotion: '2019/2020',
-  formation: 'M2 DOSI',
-  enseignant: 'Philippe SALIOU',
-  uniteEnseignement: 'SSI',
-  elementEnseignement: ''},
-  
-  ];
-*/
-  
+  hideModal(): void {
+    this.isVisible = false;
+    this.isModifVisible = false;
+  }
 
 }
