@@ -4,7 +4,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
 import { QuestionService } from 'src/app/service/question/question.service';
 import { QuestionEvaluationService } from 'src/app/service/questionEvaluation/question-evaluation.service';
-import { ModifierComponent } from '../modifier/modifier/modifier.component';
+import { ModifierComponent } from '../modifier/modifier.component';
 
 @Component({
   selector: 'app-evaluation-question',
