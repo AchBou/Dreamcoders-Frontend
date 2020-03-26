@@ -25,6 +25,7 @@ import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QualificatifComponent } from './qualificatif/qualificatif.component';
 import { MatPaginatorIntl } from '@angular/material';
 import { MatPaginatorIntlCro } from './paginator/pagintorInterface';
+import { ModifierComponent } from './evaluation/modifier/modifier.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -37,7 +38,8 @@ registerLocaleData(fr);
     DialogComponent,
     RubriqueComponent,
     ModalComponent,
-    QualificatifComponent
+    QualificatifComponent,
+    ModifierComponent
   ],
   imports: [
     BrowserModule,

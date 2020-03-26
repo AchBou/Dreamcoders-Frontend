@@ -5,6 +5,7 @@ import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { QualificatifComponent } from './qualificatif/qualificatif.component';
+import { ModifierComponent } from './evaluation/modifier/modifier.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
@@ -13,7 +14,6 @@ const routes: Routes = [
   { path: 'rubrique', component: RubriqueComponent },
   { path: 'qualificatif', component: QualificatifComponent },
   { path: 'modifierevaluation', component: ModifierComponent }
-
 
 ];
 

@@ -24,7 +24,7 @@ export class ModifierComponent implements OnInit {
   rubriquesEval: any[] = [];
   rubriqueEvalAdd : RubriqueEvaluation =  new RubriqueEvaluation();
   selectedUser: Rubrique = null;
- 
+
   constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService) {}
 
 
@@ -38,7 +38,7 @@ export class ModifierComponent implements OnInit {
   console.log(this.evaluationToEdit);});
 
   }
-  
+
   deleteRubriqueEval(rubriqueSupprimer: Rubrique){
     this.rubriqueEvalService.deleteRubriqueEval(this.evaluationToEdit.idEvaluation,rubriqueSupprimer.idRubrique).subscribe((ev) =>{
       console.log(rubriqueSupprimer);
@@ -64,7 +64,7 @@ export class ModifierComponent implements OnInit {
         })
 
       }
-    
+
   }
   activer(rubrique : any){
     if(rubrique.active){
