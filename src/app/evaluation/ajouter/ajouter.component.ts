@@ -61,7 +61,7 @@ export class AjouterComponent implements OnInit {
       this.service.getPromotions(code_formation).subscribe(res=> this.promotion = res.entity);
     }
   }
-  getUE(code_formation){
+  getUE(code_formation){    
     if(code_formation==null){
       this.ue = [];
     }
@@ -70,8 +70,9 @@ export class AjouterComponent implements OnInit {
     }
   }
   getEC(code_ue, f: NgForm){
+    f.value.code_ec = null;
     if(code_ue!=null){
-      this.service.getEc(code_ue).subscribe(res=>{
+      this.service.getEc(code_ue, f.value.code_formation).subscribe(res=>{
         if(res.status!=404){
           this.EcHidden = false;
           this.ec = res.entity;

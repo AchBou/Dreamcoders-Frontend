@@ -56,7 +56,7 @@
                     <ng-template #extraTpl>
                         <!-- You can use stopPropagation if you don't want the panel to toggle -->
                         <button nz-button *ngIf="rubrique == active" (click)="showAddQuestion(index)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
-                        <button nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment supprimer cette rubrique de l'évaluation? toutes les questions associer seront aussi supprimées" (nzOnConfirm)="deleteRubriqueEval(rubrique)" nzPopconfirmPlacement="right" 
+                        <button nz-popconfirm [nzPopconfirmTitle]="'Voulez vous vraiment supprimer cette rubrique?'" (nzOnConfirm)="deleteRubriqueEval(rubrique)" nzPopconfirmPlacement="right" 
                             nz-button (click)="$event.stopPropagation()"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
                     </ng-template>
                         <app-evaluation-question (click)="$event.stopPropagation()" *ngIf="rubrique.questionEvaluations" [questionEvaluations]="rubrique.questionEvaluations" [idRubEva]="rubrique.idRubriqueEvaluation"></app-evaluation-question>

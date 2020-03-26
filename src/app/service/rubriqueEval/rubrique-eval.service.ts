@@ -14,7 +14,7 @@ export class RubriqueEvalService {
   getRubriquesEval(id : number): Observable<any>{
     return this.http.get(this.baseUrl+"/rubriqueEval/" + id);
   }
-  ajouterRubriqueEval(idEvaluation: number, idRubrique: number){
+  ajouterRubriqueEval(idEvaluation: number, idRubrique: number): Observable<any>{
     return this.http.get(this.baseUrl+"/rubriqueEval/create/" + idEvaluation + "/" + idRubrique);
   }
   deleteRubriqueEval(idRubriqueEvaluation: number){

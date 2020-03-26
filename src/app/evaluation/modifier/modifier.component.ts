@@ -12,6 +12,7 @@ import { EvaluationQuestionComponent } from '../question/question.component';
 import { AppComponent } from 'src/app/app.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { QuestionService } from 'src/app/service/question/question.service';
+import { EvaluationService } from 'src/app/service/evaluation/evaluation.service';
 
 @Component({
   selector: 'app-modifier',
@@ -31,13 +32,13 @@ export class ModifierComponent implements OnInit {
 
   @ViewChildren(EvaluationQuestionComponent) rubriqueQuestion : QueryList<EvaluationQuestionComponent>
  
-  constructor(private notification: NzNotificationService, private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private qservice: QuestionService,  private app: AppComponent) {
+  constructor(private notification: NzNotificationService, private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private qservice: QuestionService,  private app: AppComponent, private evalService: EvaluationService) {
     this.evaluationToEdit=history.state;
     this.rubriquesEval = this.evaluationToEdit.rubriqueEvaluations;
   }
 
   ngOnInit() {
-    this.app.setTitle("Évaluation: "+this.evaluationToEdit.designation);
+    this.app.setTitle("Évaluation : "+this.evaluationToEdit.designation);
     this.rubriqueService.getRubrique().subscribe((rubriques) => this.rubriques = rubriques);
     this.getQuestions();
     /*this.rubriqueEvalService
@@ -87,7 +88,7 @@ export class ModifierComponent implements OnInit {
         this.rubriqueEvalAdd.rubrique = this.selectedUser;
         console.log(this.rubriqueEvalAdd);
         this.rubriqueEvalService.ajouterRubriqueEval(this.evaluationToEdit.idEvaluation,this.selectedUser.idRubrique).subscribe((rubriqueeval) => {
-          this.rubriquesEval.push(this.rubriqueEvalAdd);
+          this.rubriquesEval.push(rubriqueeval);
           this.notification.create(
             'success',
             'Succès',
@@ -108,8 +109,19 @@ export class ModifierComponent implements OnInit {
     }
   }
   publier(){
-    this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {this.message.create("success","évaluation publiée");
-      this.router.navigateByUrl('/evaluation');
+    this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {
+      if(eva){
+        this.evalService.reloadData();
+        this.message.create("success","évaluation publiée");
+        this.router.navigateByUrl('/evaluation');
+      }
+      else{
+        this.notification.create(
+          'warning',
+          'Échec de publication.',
+          "Aucune rubrique ne doit être vide",
+        );
+      }
 
     }, reponse =>{ this.notification.create(
       'error',
@@ -118,6 +130,7 @@ export class ModifierComponent implements OnInit {
     ); });
   }
   sauvegarder(){
+    this.evalService.reloadData();
     this.notification.create(
       'success',
       'Succès',

@@ -45,7 +45,7 @@
           <mat-hint>{{qualificatifControl.value?.sound}}</mat-hint>
         </mat-form-field>
         <span *ngIf="!this.dataSource.data[index].updatable && element.qualificatif!=null">
-          {{element.qualificatif.maximal}} - {{element.qualificatif.minimal}}
+          {{element.qualificatif.minimal}} - {{element.qualificatif.maximal}}
         </span>
         <span *ngIf="!this.dataSource.data[index].updatable && element.qualificatif==null">-</span>
       </td>

@@ -3,8 +3,8 @@
   </button-->
     <div *ngIf="!lq.length" style="text-align: center;">
       <i nz-icon nzType="message" nzTheme="twotone" style="font-size: xx-large;"></i>
-      <h3>Aucune question trouvée!</h3>
-      <span>Veulliez ajouter des questions.</span>
+      <h3>Aucune question trouvée !</h3>
+      <span>Veuillez ajouter des questions.</span>
     </div>
 
     <table *ngIf="lq.length" mat-table [dataSource]="lq.concat(createCache)">
@@ -22,7 +22,7 @@
       <ng-container matColumnDef="Qualificatif">
         <th mat-header-cell *matHeaderCellDef>Qualificatif </th>
         <td mat-cell *matCellDef="let element; let index=index">
-          <div class="left">{{element.question.qualificatif.maximal}}</div> - <div class="right">{{element.question.qualificatif.minimal}}</div>
+          <div class="left">{{element.question.qualificatif.minimal}}</div> - <div class="right">{{element.question.qualificatif.maximal}}</div>
         </td>
       </ng-container>
   
@@ -77,7 +77,7 @@
             <ng-container matColumnDef="Qualificatif">
                 <th mat-header-cell *matHeaderCellDef>Qualificatif </th>
                 <td mat-cell *matCellDef="let element; let index=index">
-                <div class="left">{{element.qualificatif.maximal}}</div> - <div class="right">{{element.qualificatif.minimal}}</div>
+                <div class="left">{{element.qualificatif.minimal}}</div> - <div class="right">{{element.qualificatif.maximal}}</div>
                 </td>
             </ng-container>
           
