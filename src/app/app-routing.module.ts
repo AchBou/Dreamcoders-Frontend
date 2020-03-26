@@ -6,7 +6,6 @@ import { HomeComponent } from './home/home.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
 import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
 
-
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
@@ -14,8 +13,6 @@ const routes: Routes = [
   { path: 'question', component: QuestionComponent },
   { path: 'rubrique', component: RubriqueComponent },
   { path: 'modifierevaluation', component: ModifierComponent }
-
-
 
 ];
 

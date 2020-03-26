@@ -7,6 +7,10 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { CommunicationService } from '../communication.service';
+import { Router } from '@angular/router';
+import { RubriqueEvalService } from '../service/rubriqueEval/rubrique-eval.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-evaluation',
@@ -38,7 +42,7 @@ export class EvaluationComponent implements OnInit {
     this.isLoaded = true
     this.changeDataSource();});
   }
- constructor(private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
+ constructor(private message: NzMessageService,private rubriqueEvalService: RubriqueEvalService,private router : Router,private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
   
 
   confirm() {
@@ -48,6 +52,12 @@ export class EvaluationComponent implements OnInit {
   cancel() {
     console.log('cancel')
   }
+  publier(evaluation: Evaluation){
+    this.rubriqueEvalService.publier(evaluation).subscribe((eva) => {this.message.create("success","évaluation publiée");
+      this.router.navigateByUrl('/evaluation');
+    });
+  }
+
 
   changeDataSource() {
     this.dataSource = new MatTableDataSource(this.evaluations);
@@ -62,15 +72,14 @@ export class EvaluationComponent implements OnInit {
   showModal(): void {
     this.isVisible = true;
   }
-  showModalModification(evaluation: Evaluation): void {
+  modifier(evaluation: Evaluation): void {
     this.editedEval = evaluation; 
-    this.isModifVisible = true;
     console.log(this.editedEval);
+    this.router.navigateByUrl('/modifierevaluation', { state: this.editedEval });
+
 
   }
-  publier(){
-    
-  }
+
 
   handleOk(): void {
     this.isVisible = false;

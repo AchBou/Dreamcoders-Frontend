@@ -1,15 +1,15 @@
 interface Evaluation {
-  id:number,
+  idEvaluation:number,
   designation:string,
   debut_reponse:Date,
   fin_reponse:Date,
   etat:string,
   noEvaluation: number
   periode:string,
-  elementConstitutiff:ElementConstitutif,
-  enseignantt:Enseignant,
-  promotionn:Promotion,
-  uniteEnseignementt: UniteEnseignement
+  elementConstitutif:ElementConstitutif,
+  enseignant:Enseignant,
+  promotion:Promotion,
+  uniteEnseignement: UniteEnseignement
 }
 interface EvaluationForm{
   code_formation: String,
