@@ -25,6 +25,7 @@ import { RubriqueComponent } from './rubrique/rubrique.component';
 import { EvaluationRubriqueComponent } from './evaluation/rubrique/rubrique.component'
 import { EvaluationQuestionComponent } from './evaluation/rubrique/question/question.component'
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
+import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -37,8 +38,7 @@ registerLocaleData(fr);
     DialogComponent,
     RubriqueComponent,
     ModalComponent,
-    EvaluationRubriqueComponent,
-    EvaluationQuestionComponent
+    ModifierComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +48,7 @@ registerLocaleData(fr);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    NzModalModule,
     NzModalModule,
     ReactiveFormsModule,
     NzDatePickerModule,

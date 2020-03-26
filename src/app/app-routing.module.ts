@@ -4,8 +4,7 @@ import { EvaluationComponent } from './evaluation/evaluation.component';
 import { QuestionComponent } from './question/question.component';
 import { HomeComponent } from './home/home.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
-import { EvaluationQuestionComponent } from './evaluation/rubrique/question/question.component';
-
+import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,7 +12,7 @@ const routes: Routes = [
   { path: 'evaluation', component: EvaluationComponent },
   { path: 'question', component: QuestionComponent },
   { path: 'rubrique', component: RubriqueComponent },
-  { path: 'evaluation/question', component: EvaluationQuestionComponent}
+  { path: 'modifierevaluation', component: ModifierComponent }
 
 ];
 
