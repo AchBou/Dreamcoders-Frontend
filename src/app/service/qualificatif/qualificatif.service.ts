@@ -14,4 +14,5 @@ export class QualificatifService {
   getQualificatifs(): Observable<Qualificatif []> {
     return this.http.get<Qualificatif []>(this.baseUrl+"/qualicatif/all");
   }
+
 }

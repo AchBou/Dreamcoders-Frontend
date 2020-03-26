@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormControl, NgForm } from '@angular/forms';
+import { Validators, FormControl } from '@angular/forms';
 import { RubriqueService } from '../service/rubrique/rubrique.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
@@ -7,7 +7,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
-import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-rubrique',
@@ -165,25 +164,5 @@ export class RubriqueComponent implements OnInit {
     })
 
   }
-/*
-  destroyModal(): boolean {
-    this.modal.destroy();
-    return false;
-  }
-
-  confirmRemove():boolean{
-    return true;
-  }
-
-  onSubmitForm(f: NgForm){
-    f.value.type = "RBS";
-      console.log(f.value);
-    this.rubService.addRub(f.value).subscribe(res=>{
-      console.log(res);
-      this.ngOnInit();
-    });
-    this.destroyModal();
-  }
-*/
 
 }
