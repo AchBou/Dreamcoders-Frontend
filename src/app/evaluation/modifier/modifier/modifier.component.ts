@@ -8,7 +8,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommunicationService } from 'src/app/communication.service';
 import { RubriqueEvalService } from 'src/app/service/rubriqueEval/rubrique-eval.service';
-import { RubriqueEvaluation } from 'src/app/model/rubrique-evaluation';
+import { AppComponent } from 'src/app/app.component';
 
 
 @Component({
@@ -18,25 +18,28 @@ import { RubriqueEvaluation } from 'src/app/model/rubrique-evaluation';
 })
 export class ModifierComponent implements OnInit {
 
-  evaluationToEdit: any;
+  evaluationToEdit: Evaluation;
   rubriques: Rubrique[];
 
   rubriquesEval: any[] = [];
-  rubriqueEvalAdd : RubriqueEvaluation =  new RubriqueEvaluation();
+  rubriqueEvalAdd : RubriqueEvaluation = {rubrique: null, evaluation: this.evaluationToEdit};
   selectedUser: Rubrique = null;
  
-  constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService) {}
+  constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private app: AppComponent) {}
 
 
   ngOnInit() {
     this.evaluationToEdit=history.state;
+    this.app.setTitle("Évaluation: "+this.evaluationToEdit.designation);
     this.rubriqueService.getRubrique().subscribe((rubriques) => this.rubriques = rubriques);
     this.rubriqueEvalService
     .getRubriquesEval(this.evaluationToEdit.idEvaluation)
     .subscribe((rubs) =>{ this.rubriquesEval = rubs;
     console.log(this.rubriquesEval);
   console.log(this.evaluationToEdit);});
-
+  }
+  ngOnDestroy(){
+    this.app.setTitle("");
   }
   
   deleteRubriqueEval(rubriqueSupprimer: Rubrique){
