@@ -57,7 +57,7 @@
                         <!-- You can use stopPropagation if you don't want the panel to toggle -->
                         <button nz-button *ngIf="rubrique.active" (click)="ayoubhere(rubrique)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
 
-                        <button nz-button (click)="deleteRubriqueEval(rubrique)"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
+                        <button nz-button nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment supprimer cette rubrique de l'évaluation?" (nzOnConfirm)="deleteRubriqueEval(rubrique)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
                     </ng-template>
                 </nz-collapse-panel>
             </nz-collapse>

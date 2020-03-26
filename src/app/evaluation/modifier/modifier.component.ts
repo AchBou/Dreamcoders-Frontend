@@ -1,12 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { RubriqueService } from 'src/app/service/rubrique/rubrique.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { NzMessageService } from 'ng-zorro-antd';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommunicationService } from 'src/app/communication.service';
+import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+import {  Router } from '@angular/router';
 import { RubriqueEvalService } from 'src/app/service/rubriqueEval/rubrique-eval.service';
 import { AppComponent } from 'src/app/app.component';
 
@@ -22,10 +17,11 @@ export class ModifierComponent implements OnInit {
   rubriques: Rubrique[];
 
   rubriquesEval: any[] = [];
-  rubriqueEvalAdd : RubriqueEvaluation = {rubrique: null, evaluation: this.evaluationToEdit};
+  rubriqueEvalAdd : RubriqueEvaluation = {idRubriqueEvaluation: null, rubrique: null, evaluation: this.evaluationToEdit, questionEvaluation: []};
   selectedUser: Rubrique = null;
  
-  constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private app: AppComponent) {}
+  constructor(private notification: NzNotificationService,private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private app: AppComponent) {}
+
 
 
   ngOnInit() {
@@ -41,19 +37,23 @@ export class ModifierComponent implements OnInit {
   ngOnDestroy(){
     this.app.setTitle("");
   }
-  
+
   deleteRubriqueEval(rubriqueSupprimer: Rubrique){
     this.rubriqueEvalService.deleteRubriqueEval(this.evaluationToEdit.idEvaluation,rubriqueSupprimer.idRubrique).subscribe((ev) =>{
       console.log(rubriqueSupprimer);
       this.rubriquesEval = this.rubriquesEval.filter(d => d.idRubrique !== rubriqueSupprimer.idRubrique);
-      this.message.create("success","Rubrique supprimée de l'évaluation");
+      this.notification.create(
+        'success',
+        'Succès',
+        "Rubrique supprimée de l'évaluation.",
+      );
     })
     
 
   }
   ajouterRubriqueEval(){
     if(this.selectedUser == null){
-    this.message.create("error","Le champs est vide");
+    this.message.create("error","Le champs est vide.");
       }
       else{
         console.log(this.selectedUser);
@@ -62,12 +62,16 @@ export class ModifierComponent implements OnInit {
         console.log(this.rubriqueEvalAdd);
         this.rubriqueEvalService.ajouterRubriqueEval(this.evaluationToEdit.idEvaluation,this.selectedUser.idRubrique).subscribe((rubriqueeval) => {
           this.rubriquesEval.push(this.selectedUser);
-          this.message.create("success","Rubrique ajoutée à l'évaluation");
+          this.notification.create(
+            'success',
+            'Succès',
+            "Rubrique ajoutée à l'évaluation.",
+          );
           this.selectedUser = null;
         })
 
       }
-    
+
   }
   activer(rubrique : any){
     if(rubrique.active){
@@ -85,10 +89,19 @@ export class ModifierComponent implements OnInit {
   publier(){
     this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {this.message.create("success","évaluation publiée");
       this.router.navigateByUrl('/evaluation');
-    });
+
+    }, reponse =>{ this.notification.create(
+      'error',
+      'Échec de publication.',
+      reponse.error.message,
+    ); });
   }
   sauvegarder(){
-    this.message.create("success","évaluation sauvegardée");
+    this.notification.create(
+      'success',
+      'Succès',
+      'Évaluation sauvegardée.',
+    );
     this.router.navigateByUrl('/evaluation');
   }
 

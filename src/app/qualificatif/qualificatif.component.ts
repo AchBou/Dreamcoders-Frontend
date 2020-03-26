@@ -1,52 +1,52 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Validators, FormControl } from '@angular/forms';
-import { RubriqueService } from '../service/rubrique/rubrique.service';
 import { MatPaginator } from '@angular/material/paginator';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
+import { QualificatifService } from '../service/qualificatif/qualificatif.service';
 
 @Component({
-  selector: 'app-rubrique',
-  templateUrl: './rubrique.component.html',
-  styleUrls: ['./rubrique.component.css']
+  selector: 'app-qualificatif',
+  templateUrl: './qualificatif.component.html',
+  styleUrls: ['./qualificatif.component.css']
 })
+export class QualificatifComponent implements OnInit {
 
-export class RubriqueComponent implements OnInit {
-
-  lr: Rubrique[];
+  lqua: Qualificatif[];
   designationFormControl = new FormControl('', Validators.required);
-  displayedColumns: string[] = ['Designation', 'action'];
+  displayedColumns: string[] = ['Minimun','Maximum', 'action'];
   dataSource: any;
   isLoaded = false;
   mode: ProgressSpinnerMode = 'indeterminate';
   isUpdating: boolean;
   counter = 0;
-  newDesignation: string;
+  newMin: string;
+  newMax: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  constructor(public rubService: RubriqueService,public dialog: MatDialog) { }
+  constructor(public qService: QualificatifService,public dialog: MatDialog) { }
 
   public ngOnInit(): void {
-    this.showRubriques();
+    this.showQualificatifs();
   }
 
   changeDataSource() {
 
-    this.dataSource = new MatTableDataSource(this.lr);
+    this.dataSource = new MatTableDataSource(this.lqua);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
 
   }
 
-  showRubriques() {
-    this.rubService.getRubrique().subscribe(res => {
-      this.lr = res;
-      console.log(this.lr);
+  showQualificatifs() {
+    this.qService.getQualificatifs().subscribe(res => {
+      this.lqua = res;
+      console.log(this.lqua);
       this.isLoaded = true
       this.changeDataSource();
       this.isUpdating = false;
@@ -72,14 +72,15 @@ export class RubriqueComponent implements OnInit {
   editUpdate(idx: any) {
     if(!this.isUpdating){
       let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-      this.newDesignation = this.lr[index].designation;
-      this.rubService.ifLinked(this.lr[index].idRubrique).subscribe(res => {
+      this.newMin = this.lqua[index].minimal;
+      this.newMax = this.lqua[index].maximal;
+      this.qService.checkValidity(this.lqua[index].idQualificatif).subscribe(res => {
         if (!res) {
           this.updateField(idx);
           this.counter++;
         }
         else {
-          this.openDialog('Cette rubrique est déjà utilisée dans une évaluation!','Opération interdite');
+          this.openDialog('Ce couple qualificatif est déjà utilisé dans une question!','Opération interdite');
         }
       })
     }
@@ -87,9 +88,9 @@ export class RubriqueComponent implements OnInit {
 
   cancelUpdate(idx: any) {
     let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    if (this.lr[index].idRubrique == null) {
+    if (this.lqua[index].idQualificatif == null) {
       this.updateField(idx);
-      this.lr.shift();
+      this.lqua.shift();
       this.changeDataSource();
     }
     else
@@ -106,14 +107,14 @@ export class RubriqueComponent implements OnInit {
 
 
   addField() {
-    if(!this.isUpdating){
-      this.lr.unshift({ idRubrique: null, ordre: null, type: "RBS", enseignant: null, designation: null, updatable: true });
-      this.changeDataSource();
-      this.newDesignation = "";
-      this.paginator.firstPage();
-      this.isUpdating = true;
-      console.log(this.counter)
-    }
+      if(!this.isUpdating){
+        this.lqua.unshift({idQualificatif:null,minimal:null,maximal:null,updatable: true });
+        this.changeDataSource();
+        this.newMin = "";
+        this.newMax ="";
+        this.paginator.firstPage();
+        this.isUpdating = true;
+      }
   }
 
   confirm() {
@@ -126,11 +127,13 @@ export class RubriqueComponent implements OnInit {
 
   edit(idx: any) {
     let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    if (this.newDesignation) {
-      console.log(this.newDesignation);
-      this.lr[index].designation = this.newDesignation;
-      if (this.lr[index].idRubrique == null) this.add(index);
-      else if (this.lr[index].idRubrique != null) this.update(index);
+    if (this.newMax && this.newMin) {
+      this.lqua[index].maximal = this.newMax;
+      this.lqua[index].minimal = this.newMin;
+      console.log(this.lqua[index].maximal);
+
+      if (this.lqua[index].idQualificatif == null) this.add(index);
+      else if (this.lqua[index].idQualificatif != null) this.update(index);
     }
     else {
       this.openDialog('Veuillez renseigner tous les champs obligatoires!','Erreur');
@@ -139,29 +142,28 @@ export class RubriqueComponent implements OnInit {
 
   add(idx: any) {
 
-     this.rubService.addRub(this.lr[idx])
-      .subscribe(() => this.showRubriques());
+     this.qService.addQualificatif(this.lqua[idx])
+      .subscribe(() => this.showQualificatifs());
 
   }
 
   update(idx: any) {
-    console.log(this.lr[idx]);
 
-    this.rubService.updateRub(this.lr[idx])
-      .subscribe(() => this.showRubriques());
+    this.qService.updateQualificatif(this.lqua[idx])
+      .subscribe(() => this.showQualificatifs());
   }
 
   remove(idx: any) {
+    console.log(idx);
 
-    this.rubService.ifLinked(idx).subscribe(res => {
+    this.qService.checkValidity(idx).subscribe(res => {
       if (!res) {
-        this.rubService.deleteRub(idx)
-          .subscribe(() => this.showRubriques());
+        this.qService.deleteQualificatif(idx)
+          .subscribe(() => this.showQualificatifs());
       }
       else {
-        this.openDialog('Cette question est déjà utilisée dans une évaluation!','Action interdite');
+        this.openDialog('Ce couple qualificatif est déjà utilisé dans une question!','Action interdite');
       }
     })
   }
-
 }

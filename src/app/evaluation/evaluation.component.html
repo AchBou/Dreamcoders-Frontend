@@ -128,7 +128,7 @@
               <mat-icon >edit</mat-icon>
       </button>
 
-                <button title="publier" [disabled]="element.etat.code !== 'ELA'" nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment publier cet évaluation?" (nzOnConfirm)="cancel()" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn" mat-icon-button
+                <button title="publier" [disabled]="element.etat.code !== 'ELA'" nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment publier cette évaluation?" (nzOnConfirm)="publier(element)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn" mat-icon-button
                     aria-label="Valider">
         <mat-icon>done</mat-icon>
       </button>
