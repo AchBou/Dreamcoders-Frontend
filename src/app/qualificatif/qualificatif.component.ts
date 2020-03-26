@@ -23,7 +23,8 @@ export class QualificatifComponent implements OnInit {
   mode: ProgressSpinnerMode = 'indeterminate';
   isUpdating: boolean;
   counter = 0;
-  newDesignation: string;
+  newMin: string;
+  newMax: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -44,8 +45,6 @@ export class QualificatifComponent implements OnInit {
 
   showQualificatifs() {
     this.qService.getQualificatifs().subscribe(res => {
-      console.log("heey");
-
       this.lqua = res;
       console.log(this.lqua);
       this.isLoaded = true
@@ -71,32 +70,33 @@ export class QualificatifComponent implements OnInit {
   }
 
   editUpdate(idx: any) {
-    // if(!this.isUpdating){
-    //   let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    //   this.newDesignation = this.lqua[index].designation;
-    //   this.rubService.ifLinked(this.lqua[index].idQualificatif).subscribe(res => {
-    //     if (!res) {
-    //       this.updateField(idx);
-    //       this.counter++;
-    //     }
-    //     else {
-    //       this.openDialog('Cette rubrique est déjà utilisée dans une évaluation!','Opération interdite');
-    //     }
-    //   })
-    // }
+    if(!this.isUpdating){
+      let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+      this.newMin = this.lqua[index].minimal;
+      this.newMax = this.lqua[index].maximal;
+      this.qService.checkValidity(this.lqua[index].idQualificatif).subscribe(res => {
+        if (!res) {
+          this.updateField(idx);
+          this.counter++;
+        }
+        else {
+          this.openDialog('Ce couple qualificatif est déjà utilisé dans une question!','Opération interdite');
+        }
+      })
+    }
   }
 
   cancelUpdate(idx: any) {
-    // let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    // if (this.lqua[index].idQualificatif == null) {
-    //   this.updateField(idx);
-    //   this.lqua.shift();
-    //   this.changeDataSource();
-    // }
-    // else
-    // {
-    //   this.updateField(idx);
-    // }
+    let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    if (this.lqua[index].idQualificatif == null) {
+      this.updateField(idx);
+      this.lqua.shift();
+      this.changeDataSource();
+    }
+    else
+    {
+      this.updateField(idx);
+    }
   }
 
 
@@ -107,14 +107,14 @@ export class QualificatifComponent implements OnInit {
 
 
   addField() {
-    // if(!this.isUpdating){
-    //   this.lqua.unshift({ idRubrique: null, ordre: null, type: "RBS", enseignant: null, designation: null, updatable: true });
-    //   this.changeDataSource();
-    //   this.newDesignation = "";
-    //   this.paginator.firstPage();
-    //   this.isUpdating = true;
-    //   console.log(this.counter)
-    // }
+      if(!this.isUpdating){
+        this.lqua.unshift({idQualificatif:null,minimal:null,maximal:null,updatable: true });
+        this.changeDataSource();
+        this.newMin = "";
+        this.newMax ="";
+        this.paginator.firstPage();
+        this.isUpdating = true;
+      }
   }
 
   confirm() {
@@ -126,42 +126,44 @@ export class QualificatifComponent implements OnInit {
   }
 
   edit(idx: any) {
-    // let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
-    // if (this.newDesignation) {
-    //   console.log(this.newDesignation);
-    //   this.lqua[index].designation = this.newDesignation;
-    //   if (this.lqua[index].idRubrique == null) this.add(index);
-    //   else if (this.lqua[index].idRubrique != null) this.update(index);
-    // }
-    // else {
-    //   this.openDialog('Veuillez renseigner tous les champs obligatoires!','Erreur');
-    // }
+    let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
+    if (this.newMax && this.newMin) {
+      this.lqua[index].maximal = this.newMax;
+      this.lqua[index].minimal = this.newMin;
+      console.log(this.lqua[index].maximal);
+
+      if (this.lqua[index].idQualificatif == null) this.add(index);
+      else if (this.lqua[index].idQualificatif != null) this.update(index);
+    }
+    else {
+      this.openDialog('Veuillez renseigner tous les champs obligatoires!','Erreur');
+    }
   }
 
   add(idx: any) {
 
-     // this.rubService.addRub(this.lqua[idx])
-     //  .subscribe(() => this.showRubriques());
+     this.qService.addQualificatif(this.lqua[idx])
+      .subscribe(() => this.showQualificatifs());
 
   }
 
   update(idx: any) {
-    // console.log(this.lqua[idx]);
-    //
-    // this.rubService.updateRub(this.lqua[idx])
-    //   .subscribe(() => this.showRubriques());
+
+    this.qService.updateQualificatif(this.lqua[idx])
+      .subscribe(() => this.showQualificatifs());
   }
 
   remove(idx: any) {
-  //
-  //   this.rubService.ifLinked(idx).subscribe(res => {
-  //     if (!res) {
-  //       this.rubService.deleteRub(idx)
-  //         .subscribe(() => this.showRubriques());
-  //     }
-  //     else {
-  //       this.openDialog('Cette question est déjà utilisée dans une évaluation!','Action interdite');
-  //     }
-  //   })
+    console.log(idx);
+
+    this.qService.checkValidity(idx).subscribe(res => {
+      if (!res) {
+        this.qService.deleteQualificatif(idx)
+          .subscribe(() => this.showQualificatifs());
+      }
+      else {
+        this.openDialog('Ce couple qualificatif est déjà utilisé dans une question!','Action interdite');
+      }
+    })
   }
 }

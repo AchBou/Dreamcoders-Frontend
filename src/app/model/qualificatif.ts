@@ -1,5 +1,6 @@
 interface Qualificatif {
   idQualificatif:number,
   minimal:string,
-  maximal:string
+  maximal:string,
+  updatable:boolean
 }

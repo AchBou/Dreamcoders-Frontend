@@ -11,7 +11,6 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { AppComponent } from '../app.component';
 
 
-
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -45,7 +44,7 @@ export class QuestionComponent implements OnInit {
   ngOnDestroy(){
     this.app.setTitle("");
   }
-  
+
   openDialog(msg: string): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
@@ -118,7 +117,7 @@ export class QuestionComponent implements OnInit {
 
   addField() {
 
-    this.lq.unshift({ idQuestion: null, type: "QUS", enseignant: null, qualificatif: { idQualificatif: null, maximal: null, minimal: null }, intitule: null, updatable: true });
+    this.lq.unshift({ idQuestion: null, type: "QUS", enseignant: null, qualificatif: { idQualificatif: null, maximal: null, minimal: null , updatable:false}, intitule: null, updatable: true });
     this.changeDataSource();
     this.paginator.firstPage();
   }
