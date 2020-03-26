@@ -112,7 +112,11 @@ export class ModifierComponent implements OnInit {
     this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {
       if(eva){
         this.evalService.reloadData();
-        this.message.create("success","évaluation publiée");
+        this.notification.create(
+          'success',
+          'Évaluation publiée',
+          ''       
+        );
         this.router.navigateByUrl('/evaluation');
       }
       else{
