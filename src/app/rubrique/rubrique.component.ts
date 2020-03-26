@@ -162,7 +162,6 @@ export class RubriqueComponent implements OnInit {
         this.openDialog('Cette question est déjà utilisée dans une évaluation!','Action interdite');
       }
     })
-
   }
 
 }
