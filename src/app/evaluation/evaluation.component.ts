@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CommunicationService } from '../communication.service';
 import { Router } from '@angular/router';
 import { RubriqueEvalService } from '../service/rubriqueEval/rubrique-eval.service';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-evaluation',
@@ -42,7 +42,7 @@ export class EvaluationComponent implements OnInit {
     this.isLoaded = true
     this.changeDataSource();});
   }
- constructor(private message: NzMessageService,private rubriqueEvalService: RubriqueEvalService,private router : Router,private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
+ constructor(private notification: NzNotificationService, private message: NzMessageService,private rubriqueEvalService: RubriqueEvalService,private router : Router,private modalService: NzModalService, private evaluationService: EvaluationService, private app:AppComponent){}
   
 
   confirm() {
@@ -54,8 +54,13 @@ export class EvaluationComponent implements OnInit {
   }
   publier(evaluation: Evaluation){
     this.rubriqueEvalService.publier(evaluation).subscribe((eva) => {this.message.create("success","évaluation publiée");
-      this.router.navigateByUrl('/evaluation');
-    });
+    this.router.navigateByUrl('/evaluation');
+
+  }, reponse =>{ this.notification.create(
+    'error',
+    'Échec de publication.',
+    reponse.error.message,
+  ); });
   }
 
 
