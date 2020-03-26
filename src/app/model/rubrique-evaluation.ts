@@ -1,4 +1,6 @@
 interface RubriqueEvaluation {
+    idRubriqueEvaluation,
     rubrique: Rubrique,
-    evaluation: Evaluation
+    evaluation: Evaluation,
+    questionEvaluation: QuestionEva[];
 }

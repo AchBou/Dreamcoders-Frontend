@@ -26,6 +26,9 @@ import { QualificatifComponent } from './qualificatif/qualificatif.component';
 import { MatPaginatorIntl } from '@angular/material';
 import { MatPaginatorIntlCro } from './paginator/pagintorInterface';
 import { ModifierComponent } from './evaluation/modifier/modifier.component';
+import { EvaluationQuestionComponent } from './evaluation/question/question.component'
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { EvaluationService } from './service/evaluation/evaluation.service';
 registerLocaleData(fr);
 
 @NgModule({
@@ -39,7 +42,8 @@ registerLocaleData(fr);
     RubriqueComponent,
     ModalComponent,
     QualificatifComponent,
-    ModifierComponent
+    ModifierComponent,
+    EvaluationQuestionComponent
   ],
   imports: [
     BrowserModule,
@@ -55,13 +59,15 @@ registerLocaleData(fr);
     NzDatePickerModule,
     NzFormModule,
     NzSelectModule,
-    MaterialModule
+    MaterialModule,
+    MatCheckboxModule
   ],
   entryComponents:[DialogComponent,ModalComponent],
   providers: [
-              { provide: NZ_I18N, useValue: fr_FR },
-              { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro}]
-              ,
+    { provide: NZ_I18N, useValue: fr_FR },
+    { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},
+    EvaluationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

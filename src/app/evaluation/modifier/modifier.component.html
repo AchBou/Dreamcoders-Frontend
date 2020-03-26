@@ -44,7 +44,7 @@
                     </ng-container>
 
                 </nz-select>
-                <button nz-button (click)="ajouterRubriqueEval()" nzType="primary" nzShape="circle"><i nz-icon nzType="plus"></i></button>
+                <button nz-button style="margin-left: 10px;" (click)="ajouterRubriqueEval()" nzType="primary" nzShape="circle"><i nz-icon nzType="plus"></i></button>
 
             </div>
         </div>
@@ -52,13 +52,15 @@
         <div nz-row>
             <h4>Rubriques</h4>
             <nz-collapse>
-                <nz-collapse-panel *ngFor="let rubrique of rubriquesEval" [nzActive]="rubrique.active" [nzHeader]="rubrique.designation" [nzExtra]="extraTpl" (click)="activer(rubrique)">
+                <nz-collapse-panel *ngFor="let rubrique of rubriquesEval; let index=index" [nzActive]="rubrique == active" [nzHeader]="rubrique.rubrique.designation" [nzExtra]="extraTpl" (click)="activer(rubrique)">
                     <ng-template #extraTpl>
                         <!-- You can use stopPropagation if you don't want the panel to toggle -->
-                        <button nz-button *ngIf="rubrique.active" (click)="ayoubhere(rubrique)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
-
-                        <button nz-button nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment supprimer cette rubrique de l'évaluation?" (nzOnConfirm)="deleteRubriqueEval(rubrique)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
+                        <button nz-button *ngIf="rubrique == active" (click)="showAddQuestion(index)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
+                        <button nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment supprimer cette rubrique de l'évaluation? toutes les questions associer seront aussi supprimées" (nzOnConfirm)="deleteRubriqueEval(rubrique)" nzPopconfirmPlacement="right" 
+                            nz-button (click)="$event.stopPropagation()"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
                     </ng-template>
+                        <app-evaluation-question (click)="$event.stopPropagation()" *ngIf="rubrique.questionEvaluations" [questionEvaluations]="rubrique.questionEvaluations" [idRubEva]="rubrique.idRubriqueEvaluation"></app-evaluation-question>
+                        <app-evaluation-question (click)="$event.stopPropagation()" *ngIf="!rubrique.questionEvaluations" [idRubEva]="rubrique.idRubriqueEvaluation"></app-evaluation-question>
                 </nz-collapse-panel>
             </nz-collapse>
 

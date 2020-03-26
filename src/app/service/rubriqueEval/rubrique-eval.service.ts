@@ -17,8 +17,8 @@ export class RubriqueEvalService {
   ajouterRubriqueEval(idEvaluation: number, idRubrique: number){
     return this.http.get(this.baseUrl+"/rubriqueEval/create/" + idEvaluation + "/" + idRubrique);
   }
-  deleteRubriqueEval(idEvaluation: number,idRubrique: number){
-    return this.http.delete(this.baseUrl+"/rubriqueEval/supprimer/" + idEvaluation + "/" + idRubrique);
+  deleteRubriqueEval(idRubriqueEvaluation: number){
+    return this.http.delete(this.baseUrl+"/rubriqueEval/supprimer/" + idRubriqueEvaluation);
   }
   publier(evaluation: Evaluation): Observable<any>{
     return this.http.post(this.baseUrl+"/eval/publier",evaluation);
