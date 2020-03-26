@@ -1,5 +1,5 @@
 interface Qualificatif {
   idQualificatif:number,
-  maximal:string,
-  minimal:string
+  minimal:string,
+  maximal:string
 }

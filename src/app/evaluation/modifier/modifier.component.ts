@@ -1,12 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { RubriqueService } from 'src/app/service/rubrique/rubrique.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommunicationService } from 'src/app/communication.service';
+import {  Router } from '@angular/router';
 import { RubriqueEvalService } from 'src/app/service/rubriqueEval/rubrique-eval.service';
 import { RubriqueEvaluation } from 'src/app/model/rubrique-evaluation';
 
@@ -28,6 +23,7 @@ export class ModifierComponent implements OnInit {
   constructor(private notification: NzNotificationService,private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService) {}
 
 
+
   ngOnInit() {
     this.evaluationToEdit=history.state;
     this.rubriqueService.getRubrique().subscribe((rubriques) => this.rubriques = rubriques);
@@ -38,7 +34,7 @@ export class ModifierComponent implements OnInit {
   console.log(this.evaluationToEdit);});
 
   }
-  
+
   deleteRubriqueEval(rubriqueSupprimer: Rubrique){
     this.rubriqueEvalService.deleteRubriqueEval(this.evaluationToEdit.idEvaluation,rubriqueSupprimer.idRubrique).subscribe((ev) =>{
       console.log(rubriqueSupprimer);
@@ -72,7 +68,7 @@ export class ModifierComponent implements OnInit {
         })
 
       }
-    
+
   }
   activer(rubrique : any){
     if(rubrique.active){

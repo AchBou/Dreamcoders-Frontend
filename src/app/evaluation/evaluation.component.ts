@@ -1,5 +1,4 @@
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { NzModalModule } from 'ng-zorro-antd/modal';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppComponent } from '../app.component';
 import { EvaluationService } from '../service/evaluation/evaluation.service';
@@ -7,7 +6,6 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { CommunicationService } from '../communication.service';
 import { Router } from '@angular/router';
 import { RubriqueEvalService } from '../service/rubriqueEval/rubrique-eval.service';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';

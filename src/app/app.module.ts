@@ -22,7 +22,10 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { DialogComponent } from './dialog/dialog.component';
 import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
-import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
+import { QualificatifComponent } from './qualificatif/qualificatif.component';
+import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntlCro } from './paginator/pagintorInterface';
+import { ModifierComponent } from './evaluation/modifier/modifier.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -35,6 +38,7 @@ registerLocaleData(fr);
     DialogComponent,
     RubriqueComponent,
     ModalComponent,
+    QualificatifComponent,
     ModifierComponent
   ],
   imports: [
@@ -54,7 +58,10 @@ registerLocaleData(fr);
     MaterialModule
   ],
   entryComponents:[DialogComponent,ModalComponent],
-  providers: [{ provide: NZ_I18N, useValue: fr_FR }],
+  providers: [
+              { provide: NZ_I18N, useValue: fr_FR },
+              { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro}]
+              ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }
