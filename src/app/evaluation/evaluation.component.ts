@@ -35,7 +35,11 @@ export class EvaluationComponent implements OnInit {
     this.showEvaluations();
     this.app.setTitle("Liste des évaluations");
   }
-
+ 
+  addNew(evaluation){
+    this.evaluationService.addevaluation(evaluation);
+    this.showEvaluations();
+  }
   showEvaluations() {
     this.evaluationService.getAllEval().subscribe((res) => {this.evaluations = res;
     console.log(this.evaluations);

@@ -1,4 +1,4 @@
-export interface QuestionEva{
+interface QuestionEva{
     idQuestionEvaluation: number,
     idRubriqueEvaluation: number,
     question: Question,

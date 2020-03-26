@@ -9,10 +9,28 @@ import { environment } from 'src/environments/environment';
 })
 export class EvaluationService {
 
+  evaluations: Evaluation[];
+
   baseUrl:string = environment.baseLink;
 
-  constructor(private http: HttpClient) { }
-  getAllEval(): Observable<any>{
-    return this.http.get(this.baseUrl+"/eval/all");
+  constructor(private http: HttpClient) { 
+    this.http.get<Evaluation[]>(this.baseUrl+"/eval/all").subscribe(val=> this.evaluations=val);
+  }
+
+  addevaluation(evaluation){
+    this.evaluations.unshift(evaluation);
+  }
+  
+  getAllEval(): Observable<Evaluation[]>{
+    return new Observable(obsever=>{
+      if(this.evaluations){
+        obsever.next(this.evaluations);
+      }
+      else{
+        setTimeout(() => {
+          this.getAllEval().subscribe(ev=> obsever.next(ev));
+        }, 500);
+      }
+    })
   }
 }

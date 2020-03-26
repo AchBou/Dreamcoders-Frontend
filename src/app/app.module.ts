@@ -22,10 +22,10 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { DialogComponent } from './dialog/dialog.component';
 import { AjouterComponent } from './evaluation/ajouter/ajouter.component';
 import { RubriqueComponent } from './rubrique/rubrique.component';
-import { EvaluationRubriqueComponent } from './evaluation/rubrique/rubrique.component'
-import { EvaluationQuestionComponent } from './evaluation/rubrique/question/question.component'
+import { EvaluationQuestionComponent } from './evaluation/question/question.component'
 import {MatCheckboxModule} from '@angular/material/checkbox'; 
 import { ModifierComponent } from './evaluation/modifier/modifier/modifier.component';
+import { EvaluationService } from './service/evaluation/evaluation.service';
 registerLocaleData(fr);
 
 @NgModule({
@@ -38,7 +38,8 @@ registerLocaleData(fr);
     DialogComponent,
     RubriqueComponent,
     ModalComponent,
-    ModifierComponent
+    ModifierComponent,
+    EvaluationQuestionComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +59,10 @@ registerLocaleData(fr);
     MatCheckboxModule
   ],
   entryComponents:[DialogComponent,ModalComponent],
-  providers: [{ provide: NZ_I18N, useValue: fr_FR }],
+  providers: [
+    EvaluationService,
+    { provide: NZ_I18N, useValue: fr_FR }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

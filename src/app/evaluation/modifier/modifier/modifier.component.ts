@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { RubriqueService } from 'src/app/service/rubrique/rubrique.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzMessageService } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommunicationService } from 'src/app/communication.service';
 import { RubriqueEvalService } from 'src/app/service/rubriqueEval/rubrique-eval.service';
+import { EvaluationQuestionComponent } from '../../question/question.component';
 import { AppComponent } from 'src/app/app.component';
-
+import { MatTableDataSource } from '@angular/material/table';
+import { QuestionService } from 'src/app/service/question/question.service';
 
 @Component({
   selector: 'app-modifier',
@@ -20,32 +22,52 @@ export class ModifierComponent implements OnInit {
 
   evaluationToEdit: Evaluation;
   rubriques: Rubrique[];
-
-  rubriquesEval: any[] = [];
-  rubriqueEvalAdd : RubriqueEvaluation = {rubrique: null, evaluation: this.evaluationToEdit};
+  questionsource: MatTableDataSource<Question>;
+  rubriquesEval: RubriqueEvaluation[] = [];
+  rubriqueEvalAdd : RubriqueEvaluation = {idRubriqueEvaluation: 0, rubrique: null, evaluation: this.evaluationToEdit, questionEvaluation: null};
   selectedUser: Rubrique = null;
- 
-  constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private app: AppComponent) {}
 
+  active: RubriqueEvaluation = null;
+
+  @ViewChildren(EvaluationQuestionComponent) rubriqueQuestion : QueryList<EvaluationQuestionComponent>
+ 
+  constructor(private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private qservice: QuestionService,  private app: AppComponent) {
+    this.evaluationToEdit=history.state;
+    this.rubriquesEval = this.evaluationToEdit.rubriqueEvaluations;
+  }
 
   ngOnInit() {
-    this.evaluationToEdit=history.state;
     this.app.setTitle("Évaluation: "+this.evaluationToEdit.designation);
     this.rubriqueService.getRubrique().subscribe((rubriques) => this.rubriques = rubriques);
-    this.rubriqueEvalService
+    this.getQuestions();
+    /*this.rubriqueEvalService
     .getRubriquesEval(this.evaluationToEdit.idEvaluation)
     .subscribe((rubs) =>{ this.rubriquesEval = rubs;
     console.log(this.rubriquesEval);
-  console.log(this.evaluationToEdit);});
+  console.log(this.evaluationToEdit);});*/
   }
+  ngAfterViewInit(){
+    // print array of QuestionEvaluation objects
+    console.log(this.rubriqueQuestion.toArray());
+  }
+
   ngOnDestroy(){
     this.app.setTitle("");
   }
-  
-  deleteRubriqueEval(rubriqueSupprimer: Rubrique){
-    this.rubriqueEvalService.deleteRubriqueEval(this.evaluationToEdit.idEvaluation,rubriqueSupprimer.idRubrique).subscribe((ev) =>{
+  getQuestions() {
+    this.qservice.getQuestions().subscribe(res => {
+      this.questionsource = new MatTableDataSource(res);
+
+    });
+  }
+  showQuestions(){
+    return this.questionsource;
+  }
+
+  deleteRubriqueEval(rubriqueSupprimer: RubriqueEvaluation){
+    this.rubriqueEvalService.deleteRubriqueEval(rubriqueSupprimer.idRubriqueEvaluation).subscribe((ev) =>{
       console.log(rubriqueSupprimer);
-      this.rubriquesEval = this.rubriquesEval.filter(d => d.idRubrique !== rubriqueSupprimer.idRubrique);
+      this.rubriquesEval = this.rubriquesEval.filter(d => d.rubrique.idRubrique !== rubriqueSupprimer.rubrique.idRubrique);
       this.message.create("success","Rubrique supprimée de l'évaluation");
     })
     
@@ -61,7 +83,7 @@ export class ModifierComponent implements OnInit {
         this.rubriqueEvalAdd.rubrique = this.selectedUser;
         console.log(this.rubriqueEvalAdd);
         this.rubriqueEvalService.ajouterRubriqueEval(this.evaluationToEdit.idEvaluation,this.selectedUser.idRubrique).subscribe((rubriqueeval) => {
-          this.rubriquesEval.push(this.selectedUser);
+          this.rubriquesEval.push(this.rubriqueEvalAdd);
           this.message.create("success","Rubrique ajoutée à l'évaluation");
           this.selectedUser = null;
         })
@@ -69,18 +91,13 @@ export class ModifierComponent implements OnInit {
       }
     
   }
-  activer(rubrique : any){
-    if(rubrique.active){
-      rubrique.active = false;
+  activer(rubrique : RubriqueEvaluation){
+    if(this.active == rubrique){
+      this.active = null;
     }
     else {
-    rubrique.active = true;
-    this.rubriquesEval.forEach((rub) => {
-      if(rub != rubrique){
-        rub.active = false;
-      }
-    })
-  }
+      this.active = rubrique;
+    }
   }
   publier(){
     this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {this.message.create("success","évaluation publiée");
@@ -92,12 +109,8 @@ export class ModifierComponent implements OnInit {
     this.router.navigateByUrl('/evaluation');
   }
 
-  ayoubhere(rubrique: any)
-  {
-    this.rubriquesEval.forEach((rub) => {
-      if(rub = rubrique){
-        rub.active = true;
-      }
-    })
+  showAddQuestion(index){
+    this.rubriqueQuestion.toArray()[index].showAddModal();
   }
+  
 }

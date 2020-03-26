@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { QuestionEva } from 'src/app/model/question_evaluation';
 import { Observable } from 'rxjs';
 
 @Injectable({

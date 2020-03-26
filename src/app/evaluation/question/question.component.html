@@ -1,7 +1,13 @@
-<button class="addBtn" (click)="showAddModal()" mat-icon-button aria-label="Ajouter" color="primary">
+<!--button class="addBtn" (click)="showAddModal()" mat-icon-button aria-label="Ajouter" color="primary">
     <mat-icon>add</mat-icon>
-  </button>
-    <table mat-table [dataSource]="lq.concat(createCache)">
+  </button-->
+    <div *ngIf="!lq.length" style="text-align: center;">
+      <i nz-icon nzType="message" nzTheme="twotone" style="font-size: xx-large;"></i>
+      <h3>Aucune question trouvée!</h3>
+      <span>Veulliez ajouter des questions.</span>
+    </div>
+
+    <table *ngIf="lq.length" mat-table [dataSource]="lq.concat(createCache)">
   
       <!-- Intitule Column -->
       <ng-container matColumnDef="Intitule">
@@ -25,7 +31,7 @@
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element; let index=index">
            
-          <button nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer cette question?" (nzOnConfirm)="remove(element.idQuestionEvaluation)" nzPopconfirmPlacement="top" class="dltBtn"
+          <button nz-popconfirm nzPopconfirmTitle="Voulez-vous vraiment supprimer cette question?" (nzOnConfirm)="remove(element.idQuestionEvaluation)" nzPopconfirmPlacement="right" class="dltBtn"
              mat-icon-button aria-label="Supprimer" color="warn">
             <mat-icon>delete</mat-icon>
           </button>
@@ -33,10 +39,10 @@
         </td>
       </ng-container>
   
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr style="height: inherit;" mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
-    <button nz-button nzType="primary" [disabled]="!createCache.length && !deleteCache.length" type="submit" (click)="save()" id="AjoutBtn">Save</button>
+    <!--button nz-button nzType="primary" [disabled]="!createCache.length && !deleteCache.length" type="submit" (click)="save()" id="AjoutBtn">Save</button-->
   
     <nz-modal nzWidth="55%" [nzStyle]="{top: '35px'}" [(nzVisible)]="isVisible" nzTitle="Ajouter des questions" (nzOnCancel)="destroyModal()">
         <div class="center">
@@ -46,7 +52,7 @@
             </mat-form-field>
         </div>
         <div class="table-container">
-          <table mat-table [dataSource]="datasource">
+          <table mat-table [dataSource]="page.showQuestions()">
             <!-- Checkbox Column -->
             <ng-container matColumnDef="select" >
               <th mat-header-cell *matHeaderCellDef class="Checkbox"> </th>
