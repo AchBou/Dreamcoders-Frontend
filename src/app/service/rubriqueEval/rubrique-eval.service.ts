@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { RubriqueEvaluation } from 'src/app/model/rubrique-evaluation';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +14,14 @@ export class RubriqueEvalService {
   getRubriquesEval(id : number): Observable<any>{
     return this.http.get(this.baseUrl+"/rubriqueEval/" + id);
   }
-  ajouterRubriqueEval(idEvaluation: number, idRubrique: number){
+  ajouterRubriqueEval(idEvaluation: number, idRubrique: number): Observable<any>{
     return this.http.get(this.baseUrl+"/rubriqueEval/create/" + idEvaluation + "/" + idRubrique);
   }
-  deleteRubriqueEval(idEvaluation: number,idRubrique: number){
-    return this.http.delete(this.baseUrl+"/rubriqueEval/supprimer/" + idEvaluation + "/" + idRubrique);
+  deleteRubriqueEval(idRubriqueEvaluation: number){
+    return this.http.delete(this.baseUrl+"/rubriqueEval/supprimer/" + idRubriqueEvaluation);
   }
-  publier(evaluation: Evaluation): Observable<any>{
-    return this.http.post(this.baseUrl+"/eval/publier",evaluation);
+  publier(evaluation: Evaluation): Observable<Evaluation>{
+    return this.http.post<Evaluation>(this.baseUrl+"/eval/publier",evaluation);
   }
 }
 

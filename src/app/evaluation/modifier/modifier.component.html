@@ -25,7 +25,7 @@
                 <h5>Élement constitutif: {{evaluationToEdit.elementConstitutiff.id.codeEc}}</h5>
             </td>
         </div> -->
-        <nz-descriptions nzTitle="Évaluation : {{evaluationToEdit.designation}}" nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
+        <nz-descriptions nzBordered [nzColumn]="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }">
             <nz-descriptions-item nzTitle="Formation" [nzSpan]="2">{{evaluationToEdit.promotion.formationn.codeFormation}}</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Année universitaire" [nzSpan]="2">{{evaluationToEdit.promotion.id.anneeUniversitaire}}</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Unité d'enseignement" [nzSpan]="4">{{evaluationToEdit.uniteEnseignement.id.codeUe}}</nz-descriptions-item>
@@ -34,6 +34,8 @@
 
         <hr>
         <hr>
+      <nz-spin *ngIf="!rubriquesEval.length" nzSimple [nzSize]="'large'" style="text-align: center;"></nz-spin>
+      <div *ngIf="rubriquesEval.length">
         <div nz-row>
             <div nz-col nzSpan="12">
 
@@ -44,7 +46,7 @@
                     </ng-container>
 
                 </nz-select>
-                <button nz-button (click)="ajouterRubriqueEval()" nzType="primary" nzShape="circle"><i nz-icon nzType="plus"></i></button>
+                <button nz-button style="margin-left: 10px;" (click)="ajouterRubriqueEval()" nzType="primary" nzShape="circle"><i nz-icon nzType="plus"></i></button>
 
             </div>
         </div>
@@ -52,13 +54,15 @@
         <div nz-row>
             <h4>Rubriques</h4>
             <nz-collapse>
-                <nz-collapse-panel *ngFor="let rubrique of rubriquesEval" [nzActive]="rubrique.active" [nzHeader]="rubrique.designation" [nzExtra]="extraTpl" (click)="activer(rubrique)">
+                <nz-collapse-panel *ngFor="let rubrique of rubriquesEval; let index=index" [nzActive]="rubrique == active" [nzHeader]="rubrique.rubrique.designation" [nzExtra]="extraTpl" (click)="activer(rubrique)">
                     <ng-template #extraTpl>
                         <!-- You can use stopPropagation if you don't want the panel to toggle -->
-                        <button nz-button *ngIf="rubrique.active" (click)="ayoubhere(rubrique)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
-
-                        <button nz-button nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment supprimer cette rubrique de l'évaluation?" (nzOnConfirm)="deleteRubriqueEval(rubrique)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
+                        <button nz-button *ngIf="rubrique == active" (click)="showAddQuestion(index)" (click)="$event.stopPropagation()"> <i nz-icon nzType="plus"></i></button>
+                        <button nz-popconfirm [nzPopconfirmTitle]="'Voulez vous vraiment supprimer cette rubrique?'" (nzOnConfirm)="deleteRubriqueEval(rubrique)" nzPopconfirmPlacement="right" 
+                            nz-button (click)="$event.stopPropagation()"> <i nz-icon nzType="delete" (click)="$event.stopPropagation()"></i></button>
                     </ng-template>
+                        <app-evaluation-question (click)="$event.stopPropagation()" *ngIf="rubrique.questionEvaluations" [questionEvaluations]="rubrique.questionEvaluations" [idRubEva]="rubrique.idRubriqueEvaluation"></app-evaluation-question>
+                        <app-evaluation-question (click)="$event.stopPropagation()" *ngIf="!rubrique.questionEvaluations" [idRubEva]="rubrique.idRubriqueEvaluation"></app-evaluation-question>
                 </nz-collapse-panel>
             </nz-collapse>
 
@@ -66,8 +70,9 @@
         <br>
         <div nz-row>
             <button nz-button nzType="primary" (click)="publier()" style="margin-right: 5%; float: right;">Publier</button>
-            <button nz-button nzType="default" (click)="sauvegarder()" style="margin-right: 1%; float: right;">sauvegarder</button>
+            <button nz-button nzType="default" (click)="sauvegarder()" style="margin-right: 1%; float: right;">Retour</button>
 
         </div>
+      </div>
     </nz-page-header-content>
 </nz-page-header>

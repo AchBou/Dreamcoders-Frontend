@@ -18,8 +18,8 @@ export class AjouterService {
   getUe(Code_formation: String): Observable<any>{
     return this.http.get(this.server+"/form/"+Code_formation+"/ue");
   }
-  getEc(Code_ue: String): Observable<any>{
-    return this.http.get(this.server+"/ue/"+Code_ue+"/ec");
+  getEc(Code_ue: String, Code_formation: String): Observable<any>{
+    return this.http.get(this.server+"/ue/"+Code_ue+"/"+Code_formation+"/ec");
   }
   addEvaluation(eva): Observable<any>{
     return this.http.post(this.server+"/eval/add", eva);

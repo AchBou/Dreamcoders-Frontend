@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { AjouterService } from '../../service/evaluation/ajouter.service';
 import { EvaluationComponent } from '../evaluation.component';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzSelectComponent } from 'ng-zorro-antd';
 
 
 @Component({
@@ -17,6 +17,10 @@ export class AjouterComponent implements OnInit {
   private ue: UE[];
   private ec: EC[];
   private EcHidden: boolean = true;
+
+  @ViewChild('f', {static: true}) form : NgForm;
+  @ViewChild('UE', {static: true}) ueselect : NzSelectComponent;
+  @ViewChild('EC', {static: true}) ecselect : NzSelectComponent;
 
   private dateDebut: Date;
   constructor(private page: EvaluationComponent, private service: AjouterService, private modalService: NzModalService) {  }
@@ -33,7 +37,7 @@ export class AjouterComponent implements OnInit {
           this.success()
           this.page.hideModal();
           f.reset();
-          this.page.ngOnInit();
+          this.page.addNew(Res.entity);
         }
         else{
           this.error(Res.entity);
@@ -61,7 +65,9 @@ export class AjouterComponent implements OnInit {
       this.service.getPromotions(code_formation).subscribe(res=> this.promotion = res.entity);
     }
   }
-  getUE(code_formation){
+  getUE(code_formation){ 
+    this.ueselect.writeValue(null);
+    this.form.value.code_ue = null;
     if(code_formation==null){
       this.ue = [];
     }
@@ -69,9 +75,10 @@ export class AjouterComponent implements OnInit {
       this.service.getUe(code_formation).subscribe(res=> this.ue = res.entity);
     }
   }
-  getEC(code_ue, f: NgForm){
+  getEC(code_ue){
+    this.ecselect.writeValue(null);
     if(code_ue!=null){
-      this.service.getEc(code_ue).subscribe(res=>{
+      this.service.getEc(code_ue, this.form.value.code_formation).subscribe(res=>{
         if(res.status!=404){
           this.EcHidden = false;
           this.ec = res.entity;
@@ -79,13 +86,11 @@ export class AjouterComponent implements OnInit {
         else{
           this.EcHidden = true;
           this.ec = [];
-          f.value.code_ec = null;
         }
       });
     }
     else{
       this.ec = [];
-      f.value.ec = null;
       this.EcHidden = true;
     }
   }

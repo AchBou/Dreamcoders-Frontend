@@ -1,5 +1,6 @@
-export class RubriqueEvaluation {
-    rubrique: Rubrique;
-    evaluation: Evaluation;
-    constructor() { }
+interface RubriqueEvaluation {
+    idRubriqueEvaluation,
+    rubrique: Rubrique,
+    evaluation: Evaluation,
+    questionEvaluation: QuestionEva[];
 }

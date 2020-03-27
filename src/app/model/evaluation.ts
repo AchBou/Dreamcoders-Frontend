@@ -3,13 +3,14 @@ interface Evaluation {
   designation:string,
   debut_reponse:Date,
   fin_reponse:Date,
-  etat:string,
+  etat:{ code: string, abreviation: string, signification: string},
   noEvaluation: number
   periode:string,
   elementConstitutif:ElementConstitutif,
   enseignant:Enseignant,
   promotion:Promotion,
-  uniteEnseignement: UniteEnseignement
+  uniteEnseignement: UniteEnseignement,
+  rubriqueEvaluations: RubriqueEvaluation[];
 }
 interface EvaluationForm{
   code_formation: String,

@@ -81,7 +81,7 @@
         <ng-container matColumnDef="etat">
             <th mat-header-cell *matHeaderCellDef> Etat </th>
             <td mat-cell *matCellDef="let element; let index=index">
-                <span>{{element.etat}}</span>
+                <span>{{element.etat.signification}}</span>
             </td>
         </ng-container>
 
@@ -124,11 +124,11 @@
         <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let element; let index=index">
-                <button [disabled]="element.etat !== 'En cours d\'élaboration'" (click)="modifier(element)" class="dltBtn" mat-icon-button aria-label="Modifier">
+                <button title="modifier" [disabled]="element.etat.code !== 'ELA'" (click)="modifier(element)" class="dltBtn" mat-icon-button aria-label="Modifier">
               <mat-icon >edit</mat-icon>
       </button>
 
-                <button [disabled]="element.etat !== 'En cours d\'élaboration'" nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment publier cette évaluation?" (nzOnConfirm)="publier(element)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn" mat-icon-button
+                <button title="publier" [disabled]="element.etat.code !== 'ELA'" nz-popconfirm nzPopconfirmTitle="Voulez vous vraiment publier cette évaluation?" (nzOnConfirm)="publier(element)" (nzOnCancel)="cancel()" nzPopconfirmPlacement="top" class="dltBtn" mat-icon-button
                     aria-label="Valider">
         <mat-icon>done</mat-icon>
       </button>
