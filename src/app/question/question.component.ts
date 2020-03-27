@@ -26,6 +26,7 @@ export class QuestionComponent implements OnInit {
   dataSource: any;
   isLoaded = false;
   newQualif = null;
+  newIntitule = null;
   mode: ProgressSpinnerMode = 'indeterminate';
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -46,6 +47,8 @@ export class QuestionComponent implements OnInit {
   }
 
   openDialog(msg: string): void {
+
+
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '500px',
       data: msg
@@ -91,7 +94,7 @@ export class QuestionComponent implements OnInit {
         this.updateField(idx);
       }
       else {
-        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être modifier!');
+        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être modifier!');
       }
     })
   }
@@ -133,6 +136,7 @@ export class QuestionComponent implements OnInit {
   edit(idx: any) {
   let index = this.paginator.pageIndex == 0 ? idx : idx + this.paginator.pageIndex * this.paginator.pageSize;
     this.lq[index].qualificatif = this.newQualif;
+    this.lq[index].intitule = this.newIntitule
     if (this.lq[index].intitule != null && this.lq[index].qualificatif != null) {
       if (this.lq[index].idQuestion == null) this.add(index);
       else if (this.lq[index].idQuestion != null) this.update(index);
@@ -161,7 +165,7 @@ export class QuestionComponent implements OnInit {
           .subscribe(() => this.showQuestions());
       }
       else {
-        this.openDialog('Cette question est déjà évaluée. Elle ne peut pas être supprimée!');
+        this.openDialog('Cette question est déjà utilisée dans une évaluation. Elle ne peut pas être supprimée!');
       }
     })
 
@@ -170,6 +174,9 @@ export class QuestionComponent implements OnInit {
 
   changeQualif(event: any) {
     this.newQualif = this.lqua.filter(element => element.idQualificatif == event.value)[0];
+  }
+  changeIntitule(event: any) {
+    this.newIntitule = event.target.value
   }
 
 }

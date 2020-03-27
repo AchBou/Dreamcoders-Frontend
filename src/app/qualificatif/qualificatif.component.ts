@@ -7,6 +7,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { DialogComponent } from '../dialog/dialog.component';
 import { QualificatifService } from '../service/qualificatif/qualificatif.service';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-qualificatif',
@@ -17,7 +18,7 @@ export class QualificatifComponent implements OnInit {
 
   lqua: Qualificatif[];
   designationFormControl = new FormControl('', Validators.required);
-  displayedColumns: string[] = ['Minimun','Maximum', 'action'];
+  displayedColumns: string[] = ['minimal','maximal', 'action'];
   dataSource: any;
   isLoaded = false;
   mode: ProgressSpinnerMode = 'indeterminate';
@@ -27,20 +28,19 @@ export class QualificatifComponent implements OnInit {
   newMax: string;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
-  constructor(public qService: QualificatifService,public dialog: MatDialog) { }
+  constructor(public qService: QualificatifService,public dialog: MatDialog, private app: AppComponent) {}
 
   public ngOnInit(): void {
     this.showQualificatifs();
+    this.app.setTitle('Liste des couples de qualicatifs');
   }
 
   changeDataSource() {
-
     this.dataSource = new MatTableDataSource(this.lqua);
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
+    this.dataSource.paginator = this.paginator;
   }
 
   showQualificatifs() {
@@ -165,5 +165,9 @@ export class QualificatifComponent implements OnInit {
         this.openDialog('Ce couple qualificatif est déjà utilisé dans une question!','Action interdite');
       }
     })
+  }
+
+  ngOnDestroy(){
+    this.app.setTitle("");
   }
 }

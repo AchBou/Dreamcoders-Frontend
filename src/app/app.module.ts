@@ -60,8 +60,7 @@ registerLocaleData(fr);
   entryComponents:[DialogComponent,ModalComponent],
   providers: [
               { provide: NZ_I18N, useValue: fr_FR },
-              { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro}]
-              ,
+              { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
