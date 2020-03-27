@@ -10,7 +10,7 @@
     <nz-form-item>
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="UE" nzRequired>Unité d'enseignement </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24" nzErrorTip="Ce champs est obligatoire">
-            <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Evaluation sur quelle UE" id="UE" name="code_ue" (ngModelChange)="getEC($event, f)" ngModel required>
+            <nz-select #UE nzShowSearch nzAllowClear nzPlaceHolder="Evaluation sur quelle UE" id="UE" name="code_ue" (ngModelChange)="getEC($event)" ngModel required>
                 <nz-option style="width: max-content;" *ngFor="let u of ue"  nzLabel="{{u.designation}}" nzValue="{{u.id.codeUe}}"></nz-option>
             </nz-select>
         </nz-form-control>
@@ -18,7 +18,7 @@
     <nz-form-item [hidden]="EcHidden">
         <nz-form-label style="text-align: left;" [nzSm]="7" [nzXs]="24" nzFor="EC" >Elément constitutif </nz-form-label>
         <nz-form-control [nzSm]="15" [nzXs]="24">
-            <nz-select nzShowSearch nzAllowClear [nzDisabled]="EcHidden" nzPlaceHolder="Evaluation porte sur quelle EC" id="EC" name="code_ec" ngModel>
+            <nz-select #EC nzShowSearch nzAllowClear [nzDisabled]="EcHidden" nzPlaceHolder="Evaluation porte sur quelle EC" id="EC" name="code_ec" ngModel>
                 <nz-option style="width: max-content;" *ngFor="let e of ec" nzLabel="{{e.designation}}" nzValue="{{e.id.codeEc}}"></nz-option>
             </nz-select>
         </nz-form-control>

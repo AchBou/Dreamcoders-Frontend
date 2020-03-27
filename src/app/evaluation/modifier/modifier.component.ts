@@ -13,6 +13,7 @@ import { AppComponent } from 'src/app/app.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { QuestionService } from 'src/app/service/question/question.service';
 import { EvaluationService } from 'src/app/service/evaluation/evaluation.service';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 
 @Component({
   selector: 'app-modifier',
@@ -34,18 +35,15 @@ export class ModifierComponent implements OnInit {
  
   constructor(private notification: NzNotificationService, private router : Router,private rubriqueEvalService: RubriqueEvalService,private rubriqueService: RubriqueService, private message: NzMessageService, private qservice: QuestionService,  private app: AppComponent, private evalService: EvaluationService) {
     this.evaluationToEdit=history.state;
-    this.rubriquesEval = this.evaluationToEdit.rubriqueEvaluations;
   }
 
   ngOnInit() {
     this.app.setTitle("Évaluation : "+this.evaluationToEdit.designation);
     this.rubriqueService.getRubrique().subscribe((rubriques) => this.rubriques = rubriques);
     this.getQuestions();
-    /*this.rubriqueEvalService
+    this.rubriqueEvalService
     .getRubriquesEval(this.evaluationToEdit.idEvaluation)
-    .subscribe((rubs) =>{ this.rubriquesEval = rubs;
-    console.log(this.rubriquesEval);
-  console.log(this.evaluationToEdit);});*/
+    .subscribe((rubs) =>{ this.rubriquesEval = rubs;});
   }
   ngAfterViewInit(){
     // print array of QuestionEvaluation objects
@@ -110,31 +108,20 @@ export class ModifierComponent implements OnInit {
   }
   publier(){
     this.rubriqueEvalService.publier(this.evaluationToEdit).subscribe((eva) => {
-      if(eva){
-        this.evalService.reloadData();
+        this.evalService.reloadData(eva);
         this.notification.create(
           'success',
           'Évaluation publiée',
           ''       
         );
         this.router.navigateByUrl('/evaluation');
-      }
-      else{
-        this.notification.create(
-          'warning',
-          'Échec de publication.',
-          "Aucune rubrique ne doit être vide",
-        );
-      }
-
     }, reponse =>{ this.notification.create(
-      'error',
+      'warning',
       'Échec de publication.',
       reponse.error.message,
     ); });
   }
   sauvegarder(){
-    this.evalService.reloadData();
     this.notification.create(
       'success',
       'Succès',

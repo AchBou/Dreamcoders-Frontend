@@ -20,9 +20,9 @@ export class EvaluationService {
   addevaluation(evaluation){
     this.evaluations.unshift(evaluation);
   }
-  reloadData(){
-    this.evaluations = null;
-    this.http.get<Evaluation[]>(this.baseUrl+"/eval/all").subscribe(val=> this.evaluations=val);
+  reloadData(evaluation: Evaluation){
+    const index = this.evaluations.findIndex(e=> e.idEvaluation == evaluation.idEvaluation);
+    this.evaluations[index]=evaluation;
   }
   getAllEval(): Observable<Evaluation[]>{
     return new Observable(obsever=>{
