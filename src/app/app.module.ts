@@ -64,15 +64,10 @@ registerLocaleData(fr);
   ],
   entryComponents:[DialogComponent,ModalComponent],
   providers: [
-<<<<<<< HEAD
-              { provide: NZ_I18N, useValue: fr_FR },
-              { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro}],
-=======
     { provide: NZ_I18N, useValue: fr_FR },
     { provide: MatPaginatorIntl, useClass: MatPaginatorIntlCro},
     EvaluationService
   ],
->>>>>>> deec228ac7b398b48036bd0918146e7fcaf9d5e6
   bootstrap: [AppComponent]
 })
 export class AppModule { }
