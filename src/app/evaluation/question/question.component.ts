@@ -20,7 +20,6 @@ export class EvaluationQuestionComponent implements OnInit {
 
   displayedColumns: string[] = ['Intitule', 'Qualificatif', 'action'];
   modalColumns: string[] = ['select', 'Intitule', 'Qualificatif'];
-  datasource: MatTableDataSource<Question>;
   deleteCache: QuestionEva[] = [];
   createCache: QuestionEva[] = [];
   modalCache: Question[]= [];
@@ -57,7 +56,7 @@ export class EvaluationQuestionComponent implements OnInit {
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.datasource.filter = filterValue.trim().toLowerCase();
+    this.page.showQuestions().filter = filterValue.trim().toLowerCase();
   }
 
   handleChange(e, el: Question){

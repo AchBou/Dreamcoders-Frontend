@@ -29,6 +29,7 @@ export class ModifierComponent implements OnInit {
   rubriqueEvalAdd : RubriqueEvaluation = {idRubriqueEvaluation: 0, rubrique: null, evaluation: this.evaluationToEdit, questionEvaluation: null};
   selectedUser: Rubrique = null;
 
+  isLoaded: boolean = false;
   active: RubriqueEvaluation = null;
 
   @ViewChildren(EvaluationQuestionComponent) rubriqueQuestion : QueryList<EvaluationQuestionComponent>
@@ -43,7 +44,7 @@ export class ModifierComponent implements OnInit {
     this.getQuestions();
     this.rubriqueEvalService
     .getRubriquesEval(this.evaluationToEdit.idEvaluation)
-    .subscribe((rubs) =>{ this.rubriquesEval = rubs;});
+    .subscribe((rubs) =>{ this.rubriquesEval = rubs; this.isLoaded=true;});
   }
   ngAfterViewInit(){
     // print array of QuestionEvaluation objects
@@ -59,7 +60,7 @@ export class ModifierComponent implements OnInit {
 
     });
   }
-  showQuestions(){
+  showQuestions(): MatTableDataSource<Question>{
     return this.questionsource;
   }
 
